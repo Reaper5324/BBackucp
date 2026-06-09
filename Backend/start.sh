@@ -1,10 +1,18 @@
 #!/bin/sh
 
-echo "Testing nginx config..."
+echo "=== ENV ==="
+echo "PORT=$PORT"
+
+echo "=== NGINX CONFIG TEST ==="
 nginx -t || exit 1
 
-echo "Starting PHP-FPM..."
+echo "=== START PHP-FPM ==="
 php-fpm -D
 
-echo "Starting Nginx..."
+sleep 2
+
+echo "=== LISTENING SOCKETS ==="
+ss -tulpn
+
+echo "=== START NGINX ==="
 nginx -g "daemon off;"
