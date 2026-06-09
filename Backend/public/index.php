@@ -1,13 +1,25 @@
 <?php
 
-header('Content-Type: application/json');
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
-echo json_encode([
-    'status' => 'alive',
-    'php' => PHP_VERSION
-]);
+$allowedOrigins = [
+    'https://baterc.netlify.app',
+    'http://bater.freedev.app',
+    'https://bater.freedev.app',
+];
 
-exit;
+if (in_array($origin, $allowedOrigins, true)) {
+    header("Access-Control-Allow-Origin: $origin");
+    header('Access-Control-Allow-Credentials: true');
+}
+
+header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
+    http_response_code(204);
+    exit();
+}
 require_once __DIR__ . '/../bater/bootstrap.php';
 require_once __DIR__ . '/../bater/core/Router.php;
 
