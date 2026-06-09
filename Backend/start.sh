@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Test nginx config first
+nginx -t
+
 # Start PHP-FPM in background
 php-fpm &
 
