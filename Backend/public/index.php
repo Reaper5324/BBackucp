@@ -22,7 +22,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
     exit();
 }
 require_once __DIR__ . '/../bater/bootstrap.php';
-require_once __DIR__ . '/../bater/core/Router.php;
+require_once __DIR__ . '/../bater/core/Router.php';
 
 $router = new Router();
 
