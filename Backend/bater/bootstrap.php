@@ -19,9 +19,9 @@ require_once __DIR__ . '/config/config.php';
 date_default_timezone_set('Africa/Johannesburg');
 
 // Hide errors in production so PHP details are not shown publicly.
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
 // --- 3. Autoloader ---
 // Maps a class name to its file. PHP calls this function automatically
 // whenever you use a class that hasn't been required yet.
