@@ -1,9 +1,10 @@
 FROM php:8.3-fpm
 
 # Install nginx and PHP extensions
-RUN apt-get update && apt-get install -y nginx \
+RUN apt-get update && apt-get install -y nginx netcat-openbsd \
     && docker-php-ext-install pdo pdo_mysql \
     && rm -rf /var/lib/apt/lists/*
+
 
 # Copy nginx config
 COPY nginx.conf /etc/nginx/sites-available/default
