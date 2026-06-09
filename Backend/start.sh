@@ -1,16 +1,10 @@
 #!/bin/sh
 
-# Ensure php-fpm socket directory exists
-mkdir -p /var/run/php
+echo "Testing nginx config..."
+nginx -t || exit 1
 
-# Test nginx config
-nginx -t
+echo "Starting PHP-FPM..."
+php-fpm -D
 
-# Start PHP-FPM in background
-php-fpm &
-
-# Wait for php-fpm socket to be ready
-sleep 1
-
-# Start nginx in foreground
+echo "Starting Nginx..."
 nginx -g "daemon off;"
