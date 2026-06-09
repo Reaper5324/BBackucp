@@ -8,10 +8,9 @@ function resolveApiBaseUrl() {
     if (window.__BATER_API_BASE_URL__) {
       return window.__BATER_API_BASE_URL__.replace(/\/+$/, '');
     }
-    const { protocol, hostname, port } = window.location;
-    return `${protocol}//${hostname}${port ? ':' + port : ''}/bater/public`;
+    return 'https://your-railway-url.up.railway.app';
   }
-  return '/bater/public';
+ return 'https://your-railway-url.up.railway.app';
 }
 
 
