@@ -5,6 +5,8 @@ require_once __DIR__ . '/../bater/bootstrap.php';
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
 $allowedOrigins = [
+    'https://baterc.netlify.app',
+    'http://baterc.netlify.app'
     'http://bater.freedev.app',
     'https://bater.freedev.app',
 ];
