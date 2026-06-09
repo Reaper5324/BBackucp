@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Bater - Simple marketplace frontend">
+  <title>Bater - Buy & Sell Locally</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="notifications" class="notification-container"></div>
+  <header class="site-header">
+    <nav id="navbar" class="navbar" aria-label="Main navigation"></nav>
+  </header>
+  <div class="app-shell">
+    <aside id="sidebar" class="app-sidebar" aria-label="Page navigation"></aside>
+    <main id="app" class="app-container"></main>
+  </div>
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <img src="images/bater-logo.jpeg" alt="Bater Logo" class="footer-logo">
+      <span>Peer-to-peer marketplace for local buying and selling.</span>
+    </div>
+  </footer>
+  <div id="loading-overlay" class="loading-overlay hidden">
+    <div class="spinner"></div>
+  </div>
+  <script src="js/config.js" type="module"></script>
+  <script src="js/app.js" type="module"></script>
+</body>
+</html>

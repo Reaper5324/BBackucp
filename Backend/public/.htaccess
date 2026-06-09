@@ -1,0 +1,12 @@
+Options -Indexes
+
+RewriteEngine On
+
+# Block access to sensitive backend folders
+RewriteRule ^(config|controllers|core|database|middleware|models|services|vendor)(/|$) - [F,L,NC]
+RewriteRule ^(\.env|bootstrap\.php|composer\.(json|lock))$ - [F,L,NC]
+
+# Route all requests through index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
