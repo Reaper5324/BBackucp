@@ -3,6 +3,7 @@
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
 $allowedOrigins = [
+    'https://bbackucp-production.up.railway.app',
     'https://baterc.netlify.app',
     'http://bater.freedev.app',
     'https://bater.freedev.app',
