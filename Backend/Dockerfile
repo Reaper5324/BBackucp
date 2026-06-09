@@ -1,10 +1,12 @@
-FROM php:8.3-apache
+FROM php:8.3-fpm
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql
+# Install nginx and PHP extensions
+RUN apt-get update && apt-get install -y nginx \
+    && docker-php-ext-install pdo pdo_mysql \
+    && rm -rf /var/lib/apt/lists/*
 
-# Enable Apache modules
-RUN a2enmod rewrite headers
+# Copy nginx config
+COPY nginx.conf /etc/nginx/sites-available/default
 
 # Set working directory
 WORKDIR /var/www/html
@@ -13,21 +15,15 @@ WORKDIR /var/www/html
 COPY bater/ ./bater/
 COPY public/ ./public/
 
-# Set public/ as Apache document root
-RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' \
-    /etc/apache2/sites-available/000-default.conf
-
-# Allow .htaccess overrides
-RUN printf '<Directory /var/www/html/public>\n\
-    AllowOverride All\n\
-    Require all granted\n\
-</Directory>\n' >> /etc/apache2/apache2.conf
-
-# Create uploads directory and set permissions
+# Fix permissions for uploads
 RUN mkdir -p /var/www/html/public/uploads/products \
     && chown -R www-data:www-data /var/www/html/public/uploads \
     && chmod -R 775 /var/www/html/public/uploads
 
+# Start script
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
 EXPOSE 80
 
-CMD ["apache2-foreground"]
+CMD ["/start.sh"]
