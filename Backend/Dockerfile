@@ -3,13 +3,6 @@ FROM php:8.3-apache
 # Install PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql
 
-# Fix MPM conflict by writing a clean mpm config
-RUN echo "Mutex file:/var/lock/apache2 default" > /etc/apache2/conf-available/mpm.conf \
-    && find /etc/apache2/mods-enabled -name 'mpm_*.load' -delete \
-    && find /etc/apache2/mods-enabled -name 'mpm_*.conf' -delete \
-    && ln -sf /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/mpm_prefork.load \
-    && ln -sf /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf
-
 # Enable Apache modules
 RUN a2enmod rewrite headers
 
@@ -20,17 +13,21 @@ WORKDIR /var/www/html
 COPY bater/ ./bater/
 COPY public/ ./public/
 
-# Set public/ as the Apache document root
+# Set public/ as Apache document root
 RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' \
     /etc/apache2/sites-available/000-default.conf
 
 # Allow .htaccess overrides
-RUN printf '<Directory /var/www/html/public>\n\tAllowOverride All\n\tRequire all granted\n</Directory>\n' \
-    >> /etc/apache2/apache2.conf
+RUN printf '<Directory /var/www/html/public>\n\
+    AllowOverride All\n\
+    Require all granted\n\
+</Directory>\n' >> /etc/apache2/apache2.conf
 
-# Fix permissions for uploads
+# Create uploads directory and set permissions
 RUN mkdir -p /var/www/html/public/uploads/products \
     && chown -R www-data:www-data /var/www/html/public/uploads \
     && chmod -R 775 /var/www/html/public/uploads
 
 EXPOSE 80
+
+CMD ["apache2-foreground"]
