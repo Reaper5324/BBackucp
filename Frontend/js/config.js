@@ -8,9 +8,9 @@ function resolveApiBaseUrl() {
     if (window.__BATER_API_BASE_URL__) {
       return window.__BATER_API_BASE_URL__.replace(/\/+$/, '');
     }
-    return 'https://your-railway-url.up.railway.app';
+    return 'https://bbackucp-production.up.railway.app';
   }
- return 'https://your-railway-url.up.railway.app';
+ return 'https://bbackucp-production.up.railway.app';
 }
 
 
