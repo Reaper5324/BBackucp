@@ -16,5 +16,10 @@ a2dismod mpm_worker 2>/dev/null || true
 # Explicitly ensure only prefork is active
 a2enmod mpm_prefork
 
+echo "=== PHP CHECK ==="
+php -v
+echo "=== APACHE MODULES ==="
+apache2 -M 2>&1 | grep -E "php|rewrite"
+
 # Hand execution off to the default Apache foreground process
 exec apache2-foreground
