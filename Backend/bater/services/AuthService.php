@@ -4,10 +4,18 @@ class AuthService {
 
 // Service methods return ['success' => true, 'data' => ...] or ['success' => false, 'error' => ...].
 private function startSession(): void {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+    if (session_status() === PHP_SESSION_NONE) {
+        session_set_cookie_params([
+            'lifetime' => 86400,
+            'path'     => '/',
+            'domain'   => '',
+            'secure'   => true,
+            'httponly' => true,
+            'samesite' => 'None',
+        ]);
+        session_start();
     }
+}
 
 public function Register(array $data): array {
     //Check if all required fields have been filled
@@ -93,21 +101,17 @@ public function login(string $email, string $password): array{
     
 }
 
-public function logout(): void{
-     
-$this->startSession();
-if(ini_get('session.use_cookies')){
-    $params = session_get_cookie_params();
-            setcookie(
-                session_name(), '', time() - 42000,
-                $params['path'], $params['domain'],
-                $params['secure'], $params['httponly']
-            );
-
-        
+public function logout(): void {
+    $this->startSession();
+    setcookie(session_name(), '', [
+        'expires'  => time() - 42000,
+        'path'     => '/',
+        'secure'   => true,
+        'httponly' => true,
+        'samesite' => 'None',
+    ]);
+    session_destroy();
 }
-session_destroy();  
-    }
 
     public function isLoggedIn(): bool{
         $this->startSession();
