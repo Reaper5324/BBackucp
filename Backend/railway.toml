@@ -3,5 +3,4 @@ builder = "dockerfile"
 dockerfilePath = "Dockerfile"
 
 [deploy]
-restartPolicyType = "on_failure"
-restartPolicyMaxRetries = 3
+startCommand = "apache2-foreground"
