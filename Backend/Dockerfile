@@ -4,6 +4,8 @@ RUN docker-php-ext-install pdo pdo_mysql
 
 RUN a2enmod rewrite headers
 
+RUN php -v && php -m | grep -i pdo
+
 WORKDIR /var/www/html
 
 # Move these lines up here to break the Docker build cache
