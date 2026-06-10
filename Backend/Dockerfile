@@ -23,6 +23,8 @@ RUN printf '<Directory /var/www/html/public>\n\tAllowOverride All\n\tRequire all
 
 RUN mkdir -p /var/www/html/public/uploads/products \
     && chown -R www-data:www-data /var/www/html/public/uploads \
-    && chmod -R 775 /var/www/html/public/uploads
+    && chmod -R 775 /var/www/html/public/uploads \
+    && chown www-data:www-data /var/www/html/public \
+    && chmod 775 /var/www/html/public
 
 EXPOSE 80
