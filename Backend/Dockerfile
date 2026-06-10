@@ -6,6 +6,10 @@ RUN a2enmod rewrite headers
 
 WORKDIR /var/www/html
 
+# Move these lines up here to break the Docker build cache
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
 COPY bater/ ./bater/
 COPY public/ ./public/
 
@@ -18,9 +22,5 @@ RUN printf '<Directory /var/www/html/public>\n\tAllowOverride All\n\tRequire all
 RUN mkdir -p /var/www/html/public/uploads/products \
     && chown -R www-data:www-data /var/www/html/public/uploads \
     && chmod -R 775 /var/www/html/public/uploads
-
-# Copy the updated script into the root directory
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
 
 EXPOSE 80
