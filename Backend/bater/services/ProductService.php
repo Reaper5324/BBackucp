@@ -278,7 +278,7 @@ public function handleImageUpload(array $file): array {
         return $this->failureResponse('Image must be a PNG or JPEG file.');
     }
 
-    $uploadDir = dirname(__DIR__) . '/public' . self::UPLOAD_DIR;
+    $uploadDir = dirname(__DIR__, 2) . '/public' . self::UPLOAD_DIR;
 
     if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true)) {
         return $this->failureResponse('Could not prepare upload directory.');
