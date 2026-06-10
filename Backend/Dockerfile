@@ -19,4 +19,7 @@ RUN mkdir -p /var/www/html/public/uploads/products \
     && chown -R www-data:www-data /var/www/html/public/uploads \
     && chmod -R 775 /var/www/html/public/uploads
 
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
 EXPOSE 80
