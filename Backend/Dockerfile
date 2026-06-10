@@ -2,15 +2,6 @@ FROM php:8.3-apache
 
 RUN docker-php-ext-install pdo pdo_mysql
 
-# Write MPM prefork config directly — bypass a2enmod/a2dismod entirely
-RUN echo '<IfModule !mpm_prefork_module>\n\
-    LoadModule mpm_prefork_module /usr/lib/apache2/modules/mod_mpm_prefork.so\n\
-</IfModule>' > /etc/apache2/mods-available/mpm_prefork.load \
-    && find /etc/apache2/mods-enabled -name 'mpm_*.load' -delete \
-    && find /etc/apache2/mods-enabled -name 'mpm_*.conf' -delete \
-    && ln -s /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/mpm_prefork.load \
-    && ln -s /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf
-
 RUN a2enmod rewrite headers
 
 WORKDIR /var/www/html
