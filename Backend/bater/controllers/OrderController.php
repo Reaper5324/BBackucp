@@ -50,9 +50,14 @@ class OrderController extends Controller {
         $this->json($result, $result['success'] ? 200 : 422);
     }
 
-    public function Paid(string $id): void {
+    /**
+     * Called by the buyer on return from PayFast.
+     * Demo mode: we trust the return URL and mark the order paid directly.
+     * In production this would be handled exclusively by the ITN webhook.
+     */
+    public function paid(string $id): void {
         $user = AuthMiddleware::handle();
-        RoleMiddleware::requireSeller($user);
+        RoleMiddleware::requireBuyer($user);
 
         $result = $this->orders->markPaid((int) $id, $user->id);
         $this->json($result, $result['success'] ? 200 : 422);
