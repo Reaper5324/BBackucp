@@ -112,6 +112,13 @@ export async function buyerOrdersPage() {
                         View Details
                       </button>
                     </div>
+                  
+                    <div class="card-actions">
+                      ${order.status === 'dispatched' ? `
+                        <button class="dispatch-btn btn btn-primary btn-sm" data-order-id="${order.id}">
+                          mark as delivered
+                        </button>
+                      ` : ''}
 
                   </div>
                 `).join('')}
@@ -162,6 +169,23 @@ export function initBuyerOrdersPage() {
       window.location.hash = `#/orders/${orderId}`;
     });
   });
+
+   document.querySelectorAll('.dispatch-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const orderId = btn.dataset.orderId;
+        
+        try {
+          const response = await orderService.markDelivered(orderId);
+          if (response.success) {
+            showNotification('Order marked as delivered!', 'success');
+            setTimeout(() => window.location.reload(), 500);
+          }
+        } catch (error) {
+          showNotification(error.message || 'Failed to update order', 'error');
+        }
+      });
+    });
 
   // Card click navigation
   document.querySelectorAll('.order-card').forEach(card => {
