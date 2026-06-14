@@ -57,6 +57,7 @@ export async function initPaymentStatusPage(status) {
       renderResult('error', response.error || 'Failed to confirm payment.');
     }
   } catch (err) {
+    console.error('markPaid failed:', err);
     renderResult('error', 'Something went wrong. Check your <a href="#/orders">orders page</a>.');
   }
 }
