@@ -867,7 +867,6 @@ button:disabled {
 
 .auth-points span {
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -2474,13 +2473,13 @@ textarea {
 
 /* Success/Error Message Icons */
 .error-message::before {
-  content: "⚠ ";
+  content: "fill in";
   color: var(--color-danger);
   font-weight: 600;
 }
 
 .form-help.success::before {
-  content: "✓ ";
+  content: "success";
   color: var(--color-success);
   font-weight: 600;
 }
