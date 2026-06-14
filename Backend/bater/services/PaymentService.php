@@ -1,7 +1,5 @@
 <?php
 
-
-
 class PaymentService {
 
     // PayFast endpoints
@@ -10,7 +8,7 @@ class PaymentService {
     const URL_VALIDATE   = 'https://sandbox.payfast.co.za/eng/query/validate';
 
 
-public function initiatePayment(int $orderId): array {
+    public function initiatePayment(int $orderId): array {
         $order = Order::findById($orderId);
 
         if (!$order) {
@@ -44,8 +42,9 @@ public function initiatePayment(int $orderId): array {
         $fields = [
             'merchant_id'  => PAYFAST_MERCHANT_ID,
             'merchant_key' => PAYFAST_MERCHANT_KEY,
-            'return_url'   => PAYFAST_RETURN_URL,
-            'cancel_url'   => PAYFAST_CANCEL_URL,
+            // Append order_id so the frontend can poll for confirmed status after redirect
+            'return_url'   => PAYFAST_RETURN_URL . '?order_id=' . $orderId,
+            'cancel_url'   => PAYFAST_CANCEL_URL . '?order_id=' . $orderId,
             'notify_url'   => PAYFAST_NOTIFY_URL,
 
             // Buyer info (optional but recommended)
@@ -101,18 +100,19 @@ public function initiatePayment(int $orderId): array {
             return ['success' => false, 'error' => 'Order not found.'];
         }
 
-        $fields['merchant_id'] = PAYFAST_MERCHANT_ID;
+        $fields['merchant_id']  = PAYFAST_MERCHANT_ID;
         $fields['merchant_key'] = PAYFAST_MERCHANT_KEY;
-        $fields['return_url'] = PAYFAST_RETURN_URL;
-        $fields['cancel_url'] = PAYFAST_CANCEL_URL;
-        $fields['notify_url'] = PAYFAST_NOTIFY_URL;
+        // Append order_id so the frontend can poll for confirmed status after redirect
+        $fields['return_url']   = PAYFAST_RETURN_URL . '?order_id=' . $order->id;
+        $fields['cancel_url']   = PAYFAST_CANCEL_URL . '?order_id=' . $order->id;
+        $fields['notify_url']   = PAYFAST_NOTIFY_URL;
         $fields['m_payment_id'] = (string) $order->id;
-        $fields['amount'] = number_format($order->total_amount, 2, '.', '');
-        $fields['item_name'] = 'Bater Order #' . $order->id;
+        $fields['amount']       = number_format($order->total_amount, 2, '.', '');
+        $fields['item_name']    = 'Bater Order #' . $order->id;
 
         $fields = array_filter($fields, fn($v) => $v !== '' && $v !== null);
-        $fields['signature'] = $this->generateSignature($fields);
-        $payment->pf_data = json_encode($fields);
+        $fields['signature']    = $this->generateSignature($fields);
+        $payment->pf_data       = json_encode($fields);
         $payment->save();
 
         $payfast_url = PAYFAST_SANDBOX ? self::URL_SANDBOX : self::URL_PRODUCTION;
@@ -134,7 +134,7 @@ public function initiatePayment(int $orderId): array {
         ];
     }
 
- public function handleItn(array $itnData): bool {
+    public function handleItn(array $itnData): bool {
         // --- Step 1: Verify signature ---
         if (!$this->verifySignature($itnData)) {
             error_log('PayFast ITN: signature mismatch');
@@ -200,7 +200,7 @@ public function initiatePayment(int $orderId): array {
         return ['success' => true, 'data' => $payment];
     }
 
- private function generateSignature(array $fields): string {
+    private function generateSignature(array $fields): string {
         // Remove signature field if present (we're generating it)
         unset($fields['signature']);
 
@@ -218,7 +218,7 @@ public function initiatePayment(int $orderId): array {
         return md5($queryString);
     }
 
-      private function verifySignature(array $itnData): bool {
+    private function verifySignature(array $itnData): bool {
         $receivedSignature = $itnData['signature'] ?? '';
         $expectedSignature = $this->generateSignature($itnData);
         return hash_equals($expectedSignature, $receivedSignature);

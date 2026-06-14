@@ -23,7 +23,7 @@ import { buyerOrdersPage, initBuyerOrdersPage } from './pages/orders/buyer-order
 import { sellerOrdersPage, initSellerOrdersPage } from './pages/orders/seller-orders.js';
 import { orderDetailPage, initOrderDetailPage } from './pages/orders/order-detail.js';
 import { paymentPage, initPaymentPage } from './pages/payments/payment.js';
-import { paymentStatusPage } from './pages/payments/payment-status.js';
+import { paymentStatusPage, initPaymentStatusPage } from './pages/payments/payment-status.js';
 import { reviewsPage, initReviewsPage } from './pages/reviews/reviews.js';
 import { messagesPage, initMessagesPage } from './pages/messages/messages.js';
 import { threadPage, initThreadPage } from './pages/messages/thread.js';
@@ -72,7 +72,14 @@ const routes = {
   'messages': { page: messagesPage, init: initMessagesPage, protected: true },
   'messages/:id': { page: threadPage, init: initThreadPage, protected: true },
   'payment': { page: paymentPage, init: initPaymentPage },
-  'payment/status/:status': { page: paymentStatusPage, init: null },
+  'payment/status/:status': {
+    page: paymentStatusPage,
+    init: () => {
+      // Re-read status from hash since init() receives no arguments from the router
+      const status = window.location.hash.split('/').pop()?.split('?')[0] || '';
+      initPaymentStatusPage(status);
+    }
+  },
   'reviews/:id': { page: reviewsPage, init: initReviewsPage },
   'seller/verification': { page: verificationPage, init: initVerificationPage, protected: true, requiredRole: 'seller' },
   'admin': { page: adminDashboardPage, init: null, protected: true, requiredRole: 'admin' },

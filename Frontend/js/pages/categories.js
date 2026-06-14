@@ -11,7 +11,7 @@ export async function categoriesPage() {
 
   return `
     <div class="dashboard-page">
-      <header class="settings-header"><div><h1>Categories</h1><p>Browse the marketplace by product category.</p></div></header>
+      <header class="profile-header-card"><div><h1>Categories</h1><p>Browse the marketplace by product category.</p></div></header>
       <section class="settings-grid">
         ${categories.map((category) => `
           <a class="settings-card" href="#/products?category_id=${category.id}">

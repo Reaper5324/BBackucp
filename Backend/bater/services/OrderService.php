@@ -220,35 +220,57 @@ class OrderService {
         ];
     }
 
-    private function formatOrderForList(Order $order): array {
-        return [
-            'id' => $order->id,
-            'buyer_id' => $order->buyer_id,
-            'seller_id' => $order->seller_id,
-            'total_amount' => $order->total_amount,
-            'total' => $order->total_amount,
-            'status' => $order->status,
-            'created_at' => $order->created_at,
-            'updated_at' => $order->updated_at,
-            'item_count' => count($order->getItems()),
-            'items' => array_map(function (OrderItem $item): array {
-                $product = $item->getproduct();
-                $unitPrice = (float) $item->unit_price;
+    private function formatOrderForList(Order $order): array
+{
+    $buyer = $order->getBuyer();
+    $seller = $order->getSeller();
 
-                return [
-                    'id' => $item->id,
-                    'order_id' => $item->order_id,
-                    'product_id' => $item->product_id,
-                    'product_title' => $product?->title ?? 'Product #' . $item->product_id,
-                    'product_image' => $product?->image_path ?? null,
-                    'quantity' => $item->quantity,
-                    'unit_price' => $unitPrice,
-                    'price' => $unitPrice,
-                    'total' => round($unitPrice * $item->quantity, 2),
-                ];
-            }, $order->getItems()),
-        ];
-    }
+    return [
+        'id' => $order->id,
+        'buyer_id' => $order->buyer_id,
+        'seller_id' => $order->seller_id,
+
+        'buyer_name' => $buyer?->name ?? 'Unknown Buyer',
+        'buyer_email' => $buyer?->email ?? '',
+
+        'seller_name' => $seller?->name ?? 'Unknown Seller',
+        'seller_email' => $seller?->email ?? '',
+
+        'total_amount' => $order->total_amount,
+        'total' => $order->total_amount,
+
+        'status' => $order->status,
+
+        'created_at' => $order->created_at,
+        'updated_at' => $order->updated_at,
+
+        'item_count' => count($order->getItems()),
+
+        'items' => array_map(function (OrderItem $item): array {
+            $product = $item->getProduct();
+            $unitPrice = (float) $item->unit_price;
+
+            return [
+                'id' => $item->id,
+                'order_id' => $item->order_id,
+                'product_id' => $item->product_id,
+
+                'product_title' =>
+                    $product?->title ?? ('Product #' . $item->product_id),
+
+                'quantity' => $item->quantity,
+
+                'unit_price' => $unitPrice,
+                'price' => $unitPrice,
+
+                'total' => round(
+                    $unitPrice * $item->quantity,
+                    2
+                )
+            ];
+        }, $order->getItems())
+    ];
+}
 
     private function transitionStatus(
         int $orderId,

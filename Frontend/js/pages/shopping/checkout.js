@@ -35,13 +35,11 @@ export async function checkoutPage() {
             <!-- Order Review -->
             <div class="checkout-section">
               <h2>Order Review</h2>
-              
+            
               <div class="order-items">
                 ${cart.items.map(item => `
                   <div class="order-item">
                     <div class="item-image">
-                      <img src="${item.product.image_path || 'images/placeholder.png'}" alt="${item.product.title}">
-                    </div>
                     <div class="item-details">
                       <h3>${item.product.title}</h3>
                       <p>Quantity: ${item.quantity}</p>
