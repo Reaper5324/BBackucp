@@ -100,7 +100,7 @@ class ReviewService {
                AND oi.product_id = ?
                AND o.status      = ?"
         );
-        $stmt->execute([$buyerId, $productId, Order::STATUS_DELIVERED]);
+        $stmt->execute([$buyerId, $productId, Order::STATUS_COMPLETED]);
         return (int) $stmt->fetchColumn() > 0;
     }
 }
