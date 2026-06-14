@@ -32,14 +32,14 @@ class OrderService {
 
             if ($sellerId === null) {
                 $sellerId = $product->seller_id;
-            } elseif ($product->seller_id !== $sellerId) {
+            } elseif ((int) $product->seller_id !== (int) $sellerId) {
                 return [
                     'success' => false,
                     'error'   => 'Your cart contains products from multiple sellers. Please checkout one seller at a time.',
                 ];
             }
 
-            if ($product->seller_id === $buyerId) {
+            if ((int) $product->seller_id === (int) $buyerId) {
                 return ['success' => false, 'error' => 'You cannot purchase your own product.'];
             }
 
@@ -63,13 +63,13 @@ class OrderService {
             }
 
             foreach ($validatedItems as $entry) {
-                $product = $entry['product'];
+                $product  = $entry['product'];
                 $cartItem = $entry['cart'];
 
-                $item = new OrderItem();
-                $item->order_id = (int) $order->id;
+                $item             = new OrderItem();
+                $item->order_id   = (int) $order->id;
                 $item->product_id = (int) $product->id;
-                $item->quantity = $cartItem->quantity;
+                $item->quantity   = $cartItem->quantity;
                 $item->unit_price = $product->price;
 
                 if (!$item->save()) {
@@ -100,8 +100,33 @@ class OrderService {
         }
     }
 
-    public function markPaid(int $orderId, int $sellerId): array {
-        return $this->transitionStatus($orderId, $sellerId, 'seller', Order::STATUS_PENDING, Order::STATUS_PAID);
+    /**
+     * Demo mode: called by the buyer on return from PayFast.
+     * Verifies the order belongs to the buyer, then marks it paid.
+     * In production, payment confirmation comes exclusively from the ITN webhook.
+     */
+    public function markPaid(int $orderId, int $buyerId): array {
+        $order = Order::findById($orderId);
+
+        if (!$order) {
+            return ['success' => false, 'error' => 'Order not found.'];
+        }
+
+        if ((int) $order->buyer_id !== (int) $buyerId) {
+            return ['success' => false, 'error' => 'Access denied.'];
+        }
+
+        if ($order->status !== Order::STATUS_PENDING) {
+            return ['success' => false, 'error' => "Order must be 'pending' to perform this action."];
+        }
+
+        $order->status = Order::STATUS_PAID;
+
+        if (!$order->save()) {
+            return ['success' => false, 'error' => 'Failed to update order status.'];
+        }
+
+        return ['success' => true, 'data' => ['order_id' => $orderId, 'status' => Order::STATUS_PAID]];
     }
 
     public function markDispatched(int $orderId, int $sellerId): array {
@@ -123,7 +148,7 @@ class OrderService {
             return ['success' => false, 'error' => 'Order not found.'];
         }
 
-        if ($order->buyer_id !== $requestingUserId && $order->seller_id !== $requestingUserId) {
+        if ((int) $order->buyer_id !== (int) $requestingUserId && (int) $order->seller_id !== (int) $requestingUserId) {
             return ['success' => false, 'error' => 'You are not part of this order.'];
         }
 
@@ -167,7 +192,7 @@ class OrderService {
             return ['success' => false, 'error' => 'Order not found.'];
         }
 
-        if ($order->buyer_id !== $requestingUserId && $order->seller_id !== $requestingUserId) {
+        if ((int) $order->buyer_id !== (int) $requestingUserId && (int) $order->seller_id !== (int) $requestingUserId) {
             return ['success' => false, 'error' => 'Access denied.'];
         }
 
@@ -187,90 +212,74 @@ class OrderService {
     }
 
     private function formatOrderDetail(Order $order): array {
-        $buyer = $order->getBuyer();
+        $buyer  = $order->getBuyer();
         $seller = $order->getSeller();
 
         return [
-            'id' => $order->id,
-            'buyer_id' => $order->buyer_id,
-            'seller_id' => $order->seller_id,
+            'id'           => $order->id,
+            'buyer_id'     => $order->buyer_id,
+            'seller_id'    => $order->seller_id,
             'total_amount' => $order->total_amount,
-            'status' => $order->status,
-            'created_at' => $order->created_at,
-            'updated_at' => $order->updated_at,
-            'buyer_name' => $buyer?->name ?? 'Unknown buyer',
-            'buyer_email' => $buyer?->email ?? '',
-            'seller_name' => $seller?->name ?? 'Unknown seller',
+            'status'       => $order->status,
+            'created_at'   => $order->created_at,
+            'updated_at'   => $order->updated_at,
+            'buyer_name'   => $buyer?->name ?? 'Unknown buyer',
+            'buyer_email'  => $buyer?->email ?? '',
+            'seller_name'  => $seller?->name ?? 'Unknown seller',
             'seller_email' => $seller?->email ?? '',
-            'items' => array_map(function (OrderItem $item): array {
-                $product = $item->getproduct();
+            'items'        => array_map(function (OrderItem $item): array {
+                $product   = $item->getProduct();
                 $unitPrice = (float) $item->unit_price;
 
                 return [
-                    'id' => $item->id,
-                    'order_id' => $item->order_id,
-                    'product_id' => $item->product_id,
+                    'id'            => $item->id,
+                    'order_id'      => $item->order_id,
+                    'product_id'    => $item->product_id,
                     'product_title' => $product?->title ?? 'Product #' . $item->product_id,
-                    'quantity' => $item->quantity,
-                    'unit_price' => $unitPrice,
-                    'price' => $unitPrice,
-                    'total' => round($unitPrice * $item->quantity, 2),
+                    'quantity'      => $item->quantity,
+                    'unit_price'    => $unitPrice,
+                    'price'         => $unitPrice,
+                    'total'         => round($unitPrice * $item->quantity, 2),
                 ];
             }, $order->getItems()),
         ];
     }
 
-    private function formatOrderForList(Order $order): array
-{
-    $buyer = $order->getBuyer();
-    $seller = $order->getSeller();
+    private function formatOrderForList(Order $order): array {
+        $buyer  = $order->getBuyer();
+        $seller = $order->getSeller();
 
-    return [
-        'id' => $order->id,
-        'buyer_id' => $order->buyer_id,
-        'seller_id' => $order->seller_id,
+        return [
+            'id'           => $order->id,
+            'buyer_id'     => $order->buyer_id,
+            'seller_id'    => $order->seller_id,
+            'buyer_name'   => $buyer?->name ?? 'Unknown Buyer',
+            'buyer_email'  => $buyer?->email ?? '',
+            'seller_name'  => $seller?->name ?? 'Unknown Seller',
+            'seller_email' => $seller?->email ?? '',
+            'total_amount' => $order->total_amount,
+            'total'        => $order->total_amount,
+            'status'       => $order->status,
+            'created_at'   => $order->created_at,
+            'updated_at'   => $order->updated_at,
+            'item_count'   => count($order->getItems()),
+            'items'        => array_map(function (OrderItem $item): array {
+                $product   = $item->getProduct();
+                $unitPrice = (float) $item->unit_price;
 
-        'buyer_name' => $buyer?->name ?? 'Unknown Buyer',
-        'buyer_email' => $buyer?->email ?? '',
-
-        'seller_name' => $seller?->name ?? 'Unknown Seller',
-        'seller_email' => $seller?->email ?? '',
-
-        'total_amount' => $order->total_amount,
-        'total' => $order->total_amount,
-
-        'status' => $order->status,
-
-        'created_at' => $order->created_at,
-        'updated_at' => $order->updated_at,
-
-        'item_count' => count($order->getItems()),
-
-        'items' => array_map(function (OrderItem $item): array {
-            $product = $item->getProduct();
-            $unitPrice = (float) $item->unit_price;
-
-            return [
-                'id' => $item->id,
-                'order_id' => $item->order_id,
-                'product_id' => $item->product_id,
-
-                'product_title' =>
-                    $product?->title ?? ('Product #' . $item->product_id),
-
-                'quantity' => $item->quantity,
-
-                'unit_price' => $unitPrice,
-                'price' => $unitPrice,
-
-                'total' => round(
-                    $unitPrice * $item->quantity,
-                    2
-                )
-            ];
-        }, $order->getItems())
-    ];
-}
+                return [
+                    'id'            => $item->id,
+                    'order_id'      => $item->order_id,
+                    'product_id'    => $item->product_id,
+                    'product_title' => $product?->title ?? ('Product #' . $item->product_id),
+                    'quantity'      => $item->quantity,
+                    'unit_price'    => $unitPrice,
+                    'price'         => $unitPrice,
+                    'total'         => round($unitPrice * $item->quantity, 2),
+                ];
+            }, $order->getItems()),
+        ];
+    }
 
     private function transitionStatus(
         int $orderId,
@@ -286,7 +295,7 @@ class OrderService {
         }
 
         $ownerField = $role . '_id';
-        if ($order->$ownerField !== $userId) {
+        if ((int) $order->$ownerField !== (int) $userId) {
             return ['success' => false, 'error' => 'Access denied.'];
         }
 
