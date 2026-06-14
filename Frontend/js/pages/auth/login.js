@@ -38,6 +38,7 @@ export async function loginPage() {
                 class="form-control"
                 autocomplete="email"
               > 
+              <span class="error-message" id="email-error"></span> 
             </div>
 
             <div class="form-group">
@@ -52,7 +53,7 @@ export async function loginPage() {
                 autocomplete="current-password"
               >
               
-             
+             <span class="error-message" id="password-error"></span>
 
              
             </div>
