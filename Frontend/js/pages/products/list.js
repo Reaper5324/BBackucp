@@ -39,7 +39,7 @@ export async function productListPage() {
         </aside>
         
         <main class="main-content">
-          <div class="content-header">
+          <div class="profile-header-card">
             <h1>All Products</h1>
             ${currentFilters.search ? `<p>Results for: <strong>${currentFilters.search}</strong></p>` : ''}
           </div>

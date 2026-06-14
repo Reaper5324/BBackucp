@@ -89,7 +89,7 @@ export async function productDetailPage(productId) {
               
               <!-- Rating -->
               <div class="rating-display">
-                <div class="stars">★ ${rating > 0 ? rating.toFixed(1) : 'No'} / 5</div>
+                <div class="stars"> ${rating > 0 ? rating.toFixed(1) : 'No'} / 5</div>
                 <span class="review-count">(${product.review_count || 0} ${product.review_count === 1 ? 'review' : 'reviews'})</span>
               </div>
             </div>
@@ -129,7 +129,7 @@ export async function productDetailPage(productId) {
                   <span class="amount">${Number(product.price || 0).toFixed(2)}</span>
                 </div>
                 <span class="badge ${inStock ? 'badge-success' : 'badge-danger'}">
-                  ${inStock ? '✓ In Stock' : '✗ Out of Stock'}
+                  ${inStock ? 'In Stock' : ' Out of Stock'}
                 </span>
               </div>
 
@@ -221,12 +221,12 @@ export async function productDetailPage(productId) {
           <div class="section-header">
             <h2>Reviews & Ratings</h2>
             ${user && user.role !== 'admin' ? `
-              <button id="write-review-btn" class="btn btn-primary btn-sm">⭐ Write a Review</button>
+              <button id="write-review-btn" class="btn btn-primary btn-sm">Write a Review</button>
             ` : ''}
           </div>
 
           ${reviews.length === 0
-            ? '<div class="empty-state compact-empty"><div class="empty-icon">⭐</div><h3>No reviews yet</h3><p>Be the first to review this product and help others!</p></div>'
+            ? '<div class="empty-state compact-empty"><div class="settings-card"></div><h3>No reviews yet</h3><p>Be the first to review this product and help others!</p></div>'
             : `<div class="reviews-list">${reviews.map(r => createReviewCard(r)).join('')}</div>`
           }
         </section>
