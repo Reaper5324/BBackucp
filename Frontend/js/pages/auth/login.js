@@ -37,8 +37,7 @@ export async function loginPage() {
                 placeholder="your@email.com"
                 class="form-control"
                 autocomplete="email"
-              >
-             <span class="error-message" id="email-error"></span> 
+              > 
             </div>
 
             <div class="form-group">
@@ -54,7 +53,7 @@ export async function loginPage() {
               >
               
              
-<span class="error-message" id="password-error"></span>
+
              
             </div>
 
