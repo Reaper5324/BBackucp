@@ -1,12 +1,10 @@
 /**
  * Payment Status Page Module
- * Shows payment result from PayFast and polls for confirmed status via ITN
+ * Shows payment result from PayFast
+ * NOTE: Demo mode — marks order paid directly on return, bypassing ITN
  */
 
 import { orderService } from '../../services/orderService.js';
-
-const MAX_ATTEMPTS   = 10;
-const POLL_INTERVAL  = 2000; // ms
 
 // ─── Page render ─────────────────────────────────────────────────────────────
 
@@ -31,7 +29,7 @@ export async function paymentStatusPage(status) {
         <div class="confirming-message">
           <div class="spinner"></div>
           <h1>Confirming Payment...</h1>
-          <p>Please wait while we verify your payment with PayFast.</p>
+          <p>Please wait...</p>
         </div>
       </div>
     </div>
@@ -40,8 +38,7 @@ export async function paymentStatusPage(status) {
 
 // ─── Init (called by router after innerHTML is set) ───────────────────────────
 
-export function initPaymentStatusPage(status) {
-  // Nothing to poll on cancel — page is already in its final state
+export async function initPaymentStatusPage(status) {
   if (status !== 'success') return;
 
   const orderId = getOrderIdFromUrl();
@@ -51,53 +48,17 @@ export function initPaymentStatusPage(status) {
     return;
   }
 
-  pollOrderStatus(orderId, 0);
-}
-
-// ─── Polling ──────────────────────────────────────────────────────────────────
-
-async function pollOrderStatus(orderId, attempts) {
-  if (attempts >= MAX_ATTEMPTS) {
-    orderService.markPaid(orderId);
-    renderResult(
-      'pending',
-      `We're still confirming your payment. Check your <a href="#/orders">orders page</a> in a moment.`
-    );
-    return;
-  }
-
   try {
-    const response = await orderService.getOrderById(orderId);
+    const response = await orderService.markPaid(orderId);
 
-    if (!response.success) {
-      // Fetch failed — retry
-      scheduleNext(orderId, attempts);
-      return;
-    }
-
-    const orderStatus = response.data?.status;
-
-    // Any post-payment status counts as confirmed
-    if (['paid', 'dispatched', 'delivered', 'completed'].includes(orderStatus)) {
+    if (response.success) {
       renderResult('success');
-      return;
+    } else {
+      renderResult('error', response.error || 'Failed to confirm payment.');
     }
-
-    if (orderStatus === 'cancelled') {
-      renderResult('error', 'Your order was cancelled.');
-      return;
-    }
-
-    // Still pending — ITN hasn't arrived yet
-    scheduleNext(orderId, attempts);
-
   } catch (err) {
-    scheduleNext(orderId, attempts);
+    renderResult('error', 'Something went wrong. Check your <a href="#/orders">orders page</a>.');
   }
-}
-
-function scheduleNext(orderId, attempts) {
-  setTimeout(() => pollOrderStatus(orderId, attempts + 1), POLL_INTERVAL);
 }
 
 // ─── DOM helpers ──────────────────────────────────────────────────────────────
@@ -109,7 +70,7 @@ function renderResult(type, customMessage = '') {
   if (type === 'success') {
     container.innerHTML = `
       <div class="success-message">
-        <div class="icon">success</div>
+        <div class="icon">✓</div>
         <h1>Payment Successful</h1>
         <p>Your order has been placed and confirmed.</p>
         <a href="#/orders" class="btn btn-primary">View Orders</a>
@@ -118,17 +79,6 @@ function renderResult(type, customMessage = '') {
     return;
   }
 
-  if (type === 'pending') {
-    container.innerHTML = `
-      <div class="warning-message">
-        <h1>Payment Submitted</h1>
-        <p>${customMessage}</p>
-      </div>
-    `;
-    return;
-  }
-
-  // error
   container.innerHTML = `
     <div class="error-message">
       <div class="icon">✕</div>
