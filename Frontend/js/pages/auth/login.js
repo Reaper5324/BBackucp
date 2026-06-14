@@ -13,19 +13,15 @@ export async function loginPage() {
     <div class="auth-layout">
       <section class="auth-showcase">
         <p class="hero-kicker">Local trade made simpler</p>
-        <h2>Buy and sell with people in your community.</h2>
         <p>Sign in to browse listings, manage orders, chat with sellers, and keep your marketplace activity in one place.</p>
         <div class="auth-points">
-          <span>Secure accounts</span>
-          <span>Buyer and seller tools</span>
-          <span>Order tracking</span>
+          <span>ITECA DEL 5</span>
         </div>
       </section>
 
       <div class="auth-container">
         <div class="auth-card">
           <div class="auth-header">
-            <span class="auth-label">Account access</span>
             <h1 class="auth-title">Welcome back</h1>
             <p class="auth-subtitle">Sign in to your Bater account</p>
           </div>
@@ -41,8 +37,7 @@ export async function loginPage() {
                 placeholder="your@email.com"
                 class="form-control"
                 autocomplete="email"
-              >
-             <span class="error-message" id="email-error"></span> 
+              > 
             </div>
 
             <div class="form-group">
@@ -58,7 +53,7 @@ export async function loginPage() {
               >
               
              
-<span class="error-message" id="password-error"></span>
+
              
             </div>
 
