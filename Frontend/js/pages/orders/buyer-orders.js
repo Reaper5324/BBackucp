@@ -29,7 +29,7 @@ export async function buyerOrdersPage() {
     const filteredOrders = filterOrders(orders, currentFilter);
 
     return `
-      <div class="main-layout">
+     
         <div class="orders-container">
           <div class="orders-header">
             <h1>My Orders</h1>
@@ -111,7 +111,7 @@ export async function buyerOrdersPage() {
             `
           }
         </div>
-      </div>
+      
     `;
   } catch (error) {
     console.error('Error loading orders:', error);
