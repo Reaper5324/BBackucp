@@ -40,7 +40,7 @@ public function markDispatched(): bool{
 }
 
 public function markDelivered(): bool{
-    $this->status = self::STATUS_DELIVERED;
+    $this->status = self::STATUS_COMPLETED;
     return $this->save();
 }
 

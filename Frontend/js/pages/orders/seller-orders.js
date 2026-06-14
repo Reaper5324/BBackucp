@@ -1,94 +1,110 @@
 /**
- * Seller Orders Page Module
- * Displays seller's orders for management
+ * Buyer Orders Page Module
+ * Displays buyer's orders and order history
  */
 
 import { orderService } from '../../services/orderService.js';
 import { showNotification } from '../../components/notifications.js';
 
+function money(value) {
+  return `R${Number(value || 0).toFixed(2)}`;
+}
+
+function formatDate(value) {
+  if (!value) return 'N/A';
+  return new Date(value).toLocaleDateString();
+}
+
 let currentFilter = 'all';
 
-export async function sellerOrdersPage() {
+export async function buyerOrdersPage() {
   try {
-    const response = await orderService.getSellerOrders();
-    
+    const response = await orderService.getBuyerOrders();
+
     if (!response.success) {
       return `<div class="error-container"><p>${response.error}</p></div>`;
     }
-    
+
     const orders = response.data || [];
     const filteredOrders = filterOrders(orders, currentFilter);
-    
+
     return `
       <div class="main-layout">
-        <div class="seller-orders-container">
+        <div class="orders-container">
           <div class="orders-header">
-            <h1>Sales Orders</h1>
-            <p>Manage your sales and shipments</p>
+            <h1>My Orders</h1>
+            <p>Track your purchases</p>
           </div>
-          
+
           <!-- Filter Tabs -->
           <div class="filter-tabs">
             <button class="filter-btn ${currentFilter === 'all' ? 'active' : ''}" data-filter="all">
-              All (${orders.length})
+              All Orders (${orders.length})
+            </button>
+            <button class="filter-btn ${currentFilter === 'pending' ? 'active' : ''}" data-filter="pending">
+              Pending (${orders.filter(o => o.status === 'pending').length})
             </button>
             <button class="filter-btn ${currentFilter === 'paid' ? 'active' : ''}" data-filter="paid">
-              Ready to Ship (${orders.filter(o => o.status === 'paid').length})
+              Paid (${orders.filter(o => o.status === 'paid').length})
             </button>
             <button class="filter-btn ${currentFilter === 'dispatched' ? 'active' : ''}" data-filter="dispatched">
-              Shipped (${orders.filter(o => o.status === 'dispatched').length})
+              Dispatched (${orders.filter(o => o.status === 'dispatched').length})
             </button>
-            <button class="filter-btn ${currentFilter === 'delivered' ? 'active' : ''}" data-filter="delivered">
-              Delivered (${orders.filter(o => o.status === 'delivered').length})
+            <button class="filter-btn ${currentFilter === 'completed' ? 'active' : ''}" data-filter="completed">
+              Completed (${orders.filter(o => o.status === 'completed').length})
             </button>
           </div>
-          
+
           <!-- Orders List -->
           ${filteredOrders.length === 0
             ? `
               <div class="empty-state">
-                <p>No orders in this category</p>
+                <p>No orders yet</p>
+                <a href="#/products" class="btn btn-primary">Start Shopping</a>
               </div>
             `
             : `
               <div class="orders-grid">
                 ${filteredOrders.map(order => `
                   <div class="order-card" data-order-id="${order.id}">
+
                     <div class="card-header">
                       <h3>Order #${order.id}</h3>
-                      <span class="badge badge-${getStatusColor(order.status)}">${order.status}</span>
+                      <span class="badge badge-${order.status || 'secondary'}">
+                        ${order.status || 'pending'}
+                      </span>
                     </div>
-                    
+
                     <div class="card-body">
                       <div class="info-row">
-                        <strong>Buyer:</strong>
-                        <span>${order.buyer_name}</span>
+                        <strong>Seller:</strong>
+                        <span>${order.seller_name || 'Unknown Seller'}</span>
                       </div>
                       <div class="info-row">
                         <strong>Total:</strong>
-                        <span>R${Number(order.total_amount || 0).toFixed(2)}</span>
+                        <span>${money(order.total_amount || order.total)}</span>
                       </div>
                       <div class="info-row">
                         <strong>Items:</strong>
-                        <span>${order.item_count} items</span>
+                        <span>${order.item_count || 0} items</span>
                       </div>
                       <div class="info-row">
                         <strong>Date:</strong>
                         <span>${formatDate(order.created_at)}</span>
                       </div>
                     </div>
-                    
+
                     <div class="card-actions">
-                      ${order.status === 'paid' ? `
-                        <button class="dispatch-btn btn btn-primary btn-sm" data-order-id="${order.id}">
-                          Mark as Dispatched
-                        </button>
-                      ` : ''}
-                      
                       <button class="view-btn btn btn-secondary btn-sm" data-order-id="${order.id}">
                         View Details
                       </button>
+                      ${order.status === 'dispatched' ? `
+                        <button class="delivered-btn btn btn-primary btn-sm" data-order-id="${order.id}">
+                          Mark as Delivered
+                        </button>
+                      ` : ''}
                     </div>
+
                   </div>
                 `).join('')}
               </div>
@@ -108,44 +124,57 @@ export async function sellerOrdersPage() {
   }
 }
 
-export function initSellerOrdersPage() {
+export function initBuyerOrdersPage() {
   // Filter buttons
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', async (e) => {
       currentFilter = e.target.dataset.filter;
-      
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+
+      document.querySelectorAll('.filter-btn')
+        .forEach(b => b.classList.remove('active'));
+
       e.target.classList.add('active');
-      
-      const html = await sellerOrdersPage();
+
+      const html = await buyerOrdersPage();
       document.getElementById('app').innerHTML = html;
-      initSellerOrdersPage();
+
+      initBuyerOrdersPage();
     });
   });
-  
-  // Dispatch buttons
-  document.querySelectorAll('.dispatch-btn').forEach(btn => {
+
+  // View Details buttons
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const orderId = btn.dataset.orderId;
+      window.location.hash = `#/orders/${orderId}`;
+    });
+  });
+
+  // Mark as Delivered buttons
+  document.querySelectorAll('.delivered-btn').forEach(btn => {
     btn.addEventListener('click', async (e) => {
       e.stopPropagation();
       const orderId = btn.dataset.orderId;
-      
+
       try {
-        const response = await orderService.markDispatched(orderId);
+        const response = await orderService.markDelivered(orderId);
         if (response.success) {
-          showNotification('Order marked as dispatched!', 'success');
+          showNotification('Order marked as delivered!', 'success');
           setTimeout(() => window.location.reload(), 500);
+        } else {
+          showNotification(response.error || 'Failed to update order', 'error');
         }
       } catch (error) {
         showNotification(error.message || 'Failed to update order', 'error');
       }
     });
   });
-  
-  // View details buttons
-  document.querySelectorAll('.view-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const orderId = btn.dataset.orderId;
+
+  // Card click navigation
+  document.querySelectorAll('.order-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const orderId = card.dataset.orderId;
       window.location.hash = `#/orders/${orderId}`;
     });
   });
@@ -154,19 +183,4 @@ export function initSellerOrdersPage() {
 function filterOrders(orders, filter) {
   if (filter === 'all') return orders;
   return orders.filter(o => o.status === filter);
-}
-
-function getStatusColor(status) {
-  const colors = {
-    'paid': 'info',
-    'dispatched': 'warning',
-    'delivered': 'success',
-    'completed': 'success',
-    'cancelled': 'danger'
-  };
-  return colors[status] || 'secondary';
-}
-
-function formatDate(dateString) {
-  return new Date(dateString).toLocaleDateString();
 }
