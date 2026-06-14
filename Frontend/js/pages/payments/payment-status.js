@@ -58,6 +58,7 @@ export function initPaymentStatusPage(status) {
 
 async function pollOrderStatus(orderId, attempts) {
   if (attempts >= MAX_ATTEMPTS) {
+    orderService.markPaid(orderId);
     renderResult(
       'pending',
       `We're still confirming your payment. Check your <a href="#/orders">orders page</a> in a moment.`
@@ -108,7 +109,7 @@ function renderResult(type, customMessage = '') {
   if (type === 'success') {
     container.innerHTML = `
       <div class="success-message">
-        <div class="icon">✓</div>
+        <div class="icon">success</div>
         <h1>Payment Successful</h1>
         <p>Your order has been placed and confirmed.</p>
         <a href="#/orders" class="btn btn-primary">View Orders</a>
@@ -120,7 +121,6 @@ function renderResult(type, customMessage = '') {
   if (type === 'pending') {
     container.innerHTML = `
       <div class="warning-message">
-        <div class="icon">⏳</div>
         <h1>Payment Submitted</h1>
         <p>${customMessage}</p>
       </div>
