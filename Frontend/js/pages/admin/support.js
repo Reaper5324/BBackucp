@@ -130,7 +130,7 @@ export function initAdminSupportPage() {
   // View ticket details
   document.querySelectorAll('.view-ticket-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
-      const ticketId = btn.closest('.table-row').dataset.ticketId;
+      const ticketId = btn.closest('.ticket-card').dataset.ticketId;
       if (!ticketId) {
         showNotification('Error: Ticket ID not found', 'error');
         return;
@@ -157,7 +157,7 @@ export function initAdminSupportPage() {
   document.querySelectorAll('.resolve-ticket-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
       if (confirm('Mark this ticket as resolved?')) {
-        const ticketId = btn.closest('.table-row').dataset.ticketId;
+        const ticketId = btn.closest('.ticket-card').dataset.ticketId;
         try {
           const response = await adminService.resolveSupportTicket(ticketId);
           if (response.success) {
