@@ -25,7 +25,7 @@ export const navByRole = {
     { label: 'Inventory', href: '#/seller/inventory' },
     { label: 'Orders', href: '#/seller/orders' },
     { label: 'Sales Analytics', href: '#/seller/analytics' },
-    { label: 'Messages', href: '#/messages/seller-messages' },
+    { label: 'Messages', href: '#/seller-messages' },
     { label: 'Profile', href: '#/profile' },
     { label: 'Settings', href: '#/profile/settings' },
   ],
