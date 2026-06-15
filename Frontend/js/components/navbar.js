@@ -14,7 +14,6 @@ export const navByRole = {
     { label: 'Categories', href: '#/categories' },
     { label: 'Cart', href: '#/cart' },
     { label: 'Orders', href: '#/orders' },
-    { label: 'Wishlist', href: '#/wishlist' },
     { label: 'Messages', href: '#/messages' },
     { label: 'Profile', href: '#/profile' },
     { label: 'Settings', href: '#/profile/settings' },

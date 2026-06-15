@@ -159,17 +159,9 @@ export async function productDetailPage(productId) {
                 >
                   ${inStock ? ' Add to Cart' : 'Out of Stock'}
                 </button>
-                <button
-                  id="wishlist-btn"
-                  class="btn btn-secondary btn-block"
-                  style="margin-top: 0.5rem;"
-                >
-                  Add to Wishlist
-                </button>
+                
               ` : `
-                <p class="text-muted" style="text-align: center; padding: 1rem 0; margin: 0;">
-                  This is your product. <a href="#/seller/products" style="color: var(--color-primary); font-weight: 600;">View your listings →</a>
-                </p>
+                
               `}
             </section>
 
