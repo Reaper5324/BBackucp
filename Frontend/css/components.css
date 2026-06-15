@@ -137,6 +137,9 @@
 
 .card-body {
   padding: var(--space-lg);
+  width: 100%;
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 .card-footer {
@@ -887,7 +890,7 @@
 /* Cart and checkout */
 .cart-content,
 .checkout-content,
-.buyer-orders-grid {
+.orders-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: var(--space-lg);
@@ -1183,7 +1186,6 @@
   color: white;
 }
 
-.orders-grid,
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

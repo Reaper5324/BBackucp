@@ -340,8 +340,8 @@
 
 /* Responsive Orders Grids */
 @media (max-width: 1199px) {
-  .buyer-orders-grid {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  .orders-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   }
   
   .order-items-grid {
@@ -350,7 +350,7 @@
 }
 
 @media (max-width: 767px) {
-  .buyer-orders-grid,
+  .orders-grid,
   .order-items-grid {
     grid-template-columns: 1fr;
   }
