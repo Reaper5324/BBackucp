@@ -39,7 +39,7 @@ import { productsPage, initProductsPage } from './pages/admin/products.js';
 import { verificationsPage, initVerificationsPage } from './pages/admin/verifications.js';
 import { logsPage } from './pages/admin/logs.js';
 import { sellersPage } from './pages/admin/sellers.js';
-import { adminCategoriesPage } from './pages/admin/categories.js';
+import { adminCategoriesPage, initAdminCategoriesPage } from './pages/admin/categories.js';
 import { reportsPage } from './pages/admin/reports.js';
 import { adminSettingsPage } from './pages/admin/settings.js';
 import { supportPage, initSupportPage } from './pages/support.js';
@@ -95,7 +95,7 @@ const routes = {
   'admin/users': { page: usersPage, init: initUsersPage, protected: true, requiredRole: 'admin' },
   'admin/sellers': { page: sellersPage, init: null, protected: true, requiredRole: 'admin' },
   'admin/products': { page: productsPage, init: initProductsPage, protected: true, requiredRole: 'admin' },
-  'admin/categories': { page: adminCategoriesPage, init: null, protected: true, requiredRole: 'admin' },
+  'admin/categories': { page: adminCategoriesPage, init: initAdminCategoriesPage, protected: true, requiredRole: 'admin' },
   'admin/reports': { page: reportsPage, init: null, protected: true, requiredRole: 'admin' },
   'admin/settings': { page: adminSettingsPage, init: null, protected: true, requiredRole: 'admin' },
   'admin/verifications': { page: verificationsPage, init: initVerificationsPage, protected: true, requiredRole: 'admin' },
