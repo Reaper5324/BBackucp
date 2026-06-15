@@ -107,6 +107,7 @@ $router->get('/support/my-tickets', 'SupportController@myTickets');
 $router->get('/admin/support', 'SupportController@all');
 $router->get('/admin/support/status/{status}', 'SupportController@byStatus');
 $router->post('/admin/support/{id}/resolve', 'SupportController@resolve');
+$router->post('/admin/support/{id}/reply', 'SupportController@reply');
 
 $router->get('/admin', 'AdminController@dashboard');
 $router->get('/admin/dashboard', 'AdminController@dashboard');

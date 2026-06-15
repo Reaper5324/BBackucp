@@ -179,5 +179,9 @@ export const adminService = {
 
   async resolveSupportTicket(ticketId) {
     return apiPost(`/admin/support/${ticketId}/resolve`, {});
+  },
+
+  async addSupportTicketReply(ticketId, replyText) {
+    return apiPost(`/admin/support/${ticketId}/reply`, { reply: replyText });
   }
 };

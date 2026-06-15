@@ -177,6 +177,21 @@ function createTicketModal(ticket) {
         <div style="margin-bottom: 20px; font-size: 0.9em; color: #666;">
           <strong>Submitted:</strong> ${new Date(ticket.created_at).toLocaleString()}
         </div>
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+          <strong>Admin Reply:</strong>
+          <form class="reply-form" style="margin-top: 15px;">
+            <textarea 
+              name="reply" 
+              placeholder="Type your reply here..." 
+              style="width: 100%; min-height: 100px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;"
+              required
+            ></textarea>
+            <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: flex-end;">
+              <button type="submit" class="btn btn-primary">Send Reply</button>
+              <button type="button" class="cancel-reply-btn btn btn-secondary">Cancel</button>
+            </div>
+          </form>
+        </div>
       </div>
       <div class="modal-footer">
         <button class="close-modal-btn btn btn-secondary">Close</button>
@@ -188,6 +203,55 @@ function createTicketModal(ticket) {
   closeButtons.forEach(btn => {
     btn.addEventListener('click', () => modal.remove());
   });
+  
+  // Handle reply form submission
+  const replyForm = modal.querySelector('.reply-form');
+  if (replyForm) {
+    replyForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      
+      // Define the button variable from the submit event
+      const button = event.target.querySelector('button[type="submit"]');
+      const originalText = button.textContent;
+      const replyText = replyForm.querySelector('textarea[name="reply"]').value.trim();
+      
+      if (!replyText) {
+        showNotification('Please enter a reply', 'warning');
+        return;
+      }
+      
+      try {
+        // Disable button and show loading state
+        button.disabled = true;
+        button.textContent = 'Sending...';
+        
+        // Send reply to backend
+        const response = await adminService.addSupportTicketReply(ticket.id, replyText);
+        
+        if (response.success) {
+          showNotification('Reply sent successfully', 'success');
+          replyForm.reset();
+          setTimeout(() => modal.remove(), 1000);
+        } else {
+          showNotification(response.message || 'Failed to send reply', 'error');
+          button.disabled = false;
+          button.textContent = originalText;
+        }
+      } catch (error) {
+        showNotification(error.message || 'Failed to send reply', 'error');
+        button.disabled = false;
+        button.textContent = originalText;
+      }
+    });
+    
+    // Handle cancel button
+    const cancelBtn = modal.querySelector('.cancel-reply-btn');
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', () => {
+        replyForm.reset();
+      });
+    }
+  }
   
   modal.addEventListener('click', (e) => {
     if (e.target === modal) modal.remove();

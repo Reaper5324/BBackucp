@@ -67,4 +67,21 @@ class SupportController extends Controller {
         $result = $this->support->resolveTicket($user->id, (int) $id);
         $this->json($result, $result['success'] ? 200 : 422);
     }
+
+    /**
+     * Admin: Add a reply to a support ticket
+     */
+    public function reply(string $id): void {
+        $user = AuthMiddleware::handle();
+        RoleMiddleware::requireAdmin($user);
+
+        $body = $this->body();
+        $result = $this->support->addReply(
+            adminId: $user->id,
+            ticketId: (int) $id,
+            replyText: $body['reply'] ?? ''
+        );
+
+        $this->json($result, $result['success'] ? 201 : 422);
+    }
 }

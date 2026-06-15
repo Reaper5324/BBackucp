@@ -270,3 +270,22 @@ CREATE TABLE support_tickets (
     INDEX idx_ticket_status  (status),
     INDEX idx_ticket_created (created_at)
 ) ENGINE=InnoDB;
+
+-- 15. support_replies
+-- Admin replies to support tickets
+-- -----------------------------------------------------------------------------
+CREATE TABLE support_replies (
+    id              INT       UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    ticket_id       INT       UNSIGNED NOT NULL,
+    admin_id        INT       UNSIGNED NOT NULL,
+    reply_message   TEXT      NOT NULL,
+    created_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_reply_ticket   FOREIGN KEY (ticket_id)   REFERENCES support_tickets(id) ON DELETE CASCADE,
+    CONSTRAINT fk_reply_admin    FOREIGN KEY (admin_id)    REFERENCES users(id),
+
+    INDEX idx_reply_ticket (ticket_id),
+    INDEX idx_reply_admin  (admin_id),
+    INDEX idx_reply_created (created_at)
+) ENGINE=InnoDB;
