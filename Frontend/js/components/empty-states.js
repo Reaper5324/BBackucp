@@ -14,7 +14,7 @@
  * @param {string} action.onclick - Click handler (if no href)
  * @returns {string} HTML for empty state
  */
-export function createEmptyState(icon, title, message, action = null) {
+export function createEmptyState( title, message, action = null) {
   const actionHtml = action
     ? `<a href="${action.href || '#'}" class="btn btn-primary btn-sm" ${action.onclick ? `onclick="${action.onclick}"` : ''}>${action.label}</a>`
     : '';
@@ -31,7 +31,7 @@ export function createEmptyState(icon, title, message, action = null) {
 
 export function emptyProductsState() {
   return createEmptyState(
-    'Products',
+    
     'No Products Found',
     'There are no products matching your search. Try adjusting your filters or browse all products.',
     { label: 'Browse All Products', href: '#/products' }
@@ -40,7 +40,7 @@ export function emptyProductsState() {
 
 export function emptyCartState() {
   return createEmptyState(
-    'Cart',
+    
     'Your Cart is Empty',
     'Start shopping to add items to your cart. Browse our marketplace for great deals!',
     { label: 'Start Shopping', href: '#/products' }
@@ -49,7 +49,7 @@ export function emptyCartState() {
 
 export function emptyOrdersState() {
   return createEmptyState(
-    'Orders',
+    
     'No Orders Yet',
     'You haven\'t placed any orders yet. Explore products and make your first purchase!',
     { label: 'Browse Products', href: '#/products' }
@@ -58,7 +58,7 @@ export function emptyOrdersState() {
 
 export function emptyWishlistState() {
   return createEmptyState(
-    'Wishlist',
+    
     'Wishlist is Empty',
     'Add products to your wishlist to save them for later. Start exploring the marketplace!',
     { label: 'Browse Products', href: '#/products' }
@@ -67,7 +67,7 @@ export function emptyWishlistState() {
 
 export function emptyMessagesState() {
   return createEmptyState(
-    'Messages',
+    
     'No Messages',
     'You don\'t have any messages yet. Start messaging with sellers or buyers!',
     { label: 'Browse Products', href: '#/products' }
@@ -76,7 +76,7 @@ export function emptyMessagesState() {
 
 export function emptyReviewsState() {
   return createEmptyState(
-    'Reviews',
+    
     'No Reviews Yet',
     'Be the first to review this product! Share your experience with the community.',
     null
