@@ -22,8 +22,15 @@ export const reviewService = {
  * Message Service
  */
 export const messageService = {
-  async getThreads() {
-    return apiGet('/messages');
+  async getThreads(userId) {
+    // Fetch all message threads for a specific user
+    // Returns all conversations where user is sender or receiver
+    if (!userId) {
+      return { success: false, data: [], error: 'User ID required' };
+    }
+    // Note: Backend endpoint needs to be implemented to filter messages by user
+    // For now this endpoint is not available - used by seller dashboard when built
+    return apiGet(`/messages/threads?user_id=${userId}`);
   },
   
   async getThread(productId, userId) {

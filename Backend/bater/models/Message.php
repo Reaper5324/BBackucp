@@ -12,6 +12,52 @@ class Message extends Model {
         public ?string $sent_at     = null
     ) {}
 
+    /** Fetch all message threads for a user */
+    public static function getThreadsForUser(int $userId): array {
+        $db   = Database::getConnection();
+        $stmt = $db->prepare(
+            'SELECT 
+                m.id,
+                m.sender_id,
+                m.receiver_id,
+                m.product_id,
+                m.body,
+                m.is_read,
+                m.sent_at,
+                p.title as product_name,
+                CASE 
+                    WHEN m.sender_id = ? THEN u_receiver.name 
+                    ELSE u_sender.name 
+                END as other_user_name,
+                CASE 
+                    WHEN m.sender_id = ? THEN m.receiver_id 
+                    ELSE m.sender_id 
+                END as other_user_id
+             FROM messages m
+             LEFT JOIN products p ON m.product_id = p.id
+             LEFT JOIN users u_sender ON m.sender_id = u_sender.id
+             LEFT JOIN users u_receiver ON m.receiver_id = u_receiver.id
+             WHERE m.sender_id = ? OR m.receiver_id = ?
+             ORDER BY m.sent_at DESC'
+        );
+        $stmt->execute([$userId, $userId, $userId, $userId]);
+        $rows = $stmt->fetchAll();
+
+        // Group threads and return last message of each thread
+        $threads = [];
+        $threadKeys = [];
+
+        foreach ($rows as $row) {
+            $key = $row['product_id'] . '-' . $row['other_user_id'];
+            if (!isset($threadKeys[$key])) {
+                $threadKeys[$key] = true;
+                $threads[] = $row;
+            }
+        }
+
+        return $threads;
+    }
+
     /** Fetch all messages in a thread between two users about a product. */
     public static function getThread(int $userA, int $userB, int $productId): array {
         $db   = Database::getConnection();

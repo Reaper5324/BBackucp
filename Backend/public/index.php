@@ -80,6 +80,7 @@ $router->get('/admin/verifications', 'VerificationController@pending');
 $router->post('/admin/verifications/{id}/approve', 'VerificationController@approve');
 $router->post('/admin/verifications/{id}/reject', 'VerificationController@reject');
 
+$router->get('/messages/threads', 'MessageController@threads');
 $router->get('/messages', 'MessageController@thread');
 $router->post('/messages', 'MessageController@send');
 

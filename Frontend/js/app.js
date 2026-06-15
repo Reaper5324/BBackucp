@@ -27,6 +27,7 @@ import { paymentStatusPage, initPaymentStatusPage } from './pages/payments/payme
 import { reviewsPage, initReviewsPage } from './pages/reviews/reviews.js';
 import { messagesPage, initMessagesPage } from './pages/messages/messages.js';
 import { threadPage, initThreadPage } from './pages/messages/thread.js';
+import { sellerMessagesPage, initSellerMessagesPage } from './pages/messages/seller-messages.js';
 import { verificationPage, initVerificationPage } from './pages/seller/verification.js';
 import { sellerInventoryPage } from './pages/seller/inventory.js';
 import { sellerAnalyticsPage } from './pages/seller/analytics.js';
@@ -69,6 +70,7 @@ const routes = {
   'orders': { page: buyerOrdersPage, init: initBuyerOrdersPage, protected: true, requiredRole: 'buyer' },
   'orders/:id': { page: orderDetailPage, init: initOrderDetailPage, protected: true },
   'seller/orders': { page: sellerOrdersPage, init: initSellerOrdersPage, protected: true, requiredRole: 'seller' },
+  'seller/messages': { page: sellerMessagesPage, init: initSellerMessagesPage, protected: true, requiredRole: 'seller' },
   'messages': { page: messagesPage, init: initMessagesPage, protected: true },
   'messages/:id': { page: threadPage, init: initThreadPage, protected: true },
   'payment': { page: paymentPage, init: initPaymentPage },

@@ -2,6 +2,22 @@
 
 class MessageController extends Controller {
 
+    public function threads(): void {
+        $user = AuthMiddleware::handle();
+        $userId = (int) $this->query('user_id', 0);
+
+        if (!$userId) {
+            $this->json(['success' => false, 'error' => 'user_id is required.'], 422);
+        }
+
+        if ($userId !== $user->id) {
+            $this->json(['success' => false, 'error' => 'Unauthorized.'], 403);
+        }
+
+        $messages = Message::getThreadsForUser($userId);
+        $this->json(['success' => true, 'data' => $messages]);
+    }
+
     public function thread(): void {
         $user = AuthMiddleware::handle();
         $productId = (int) $this->query('product_id', 0);
