@@ -32,7 +32,7 @@ export const navByRole = {
     { label: 'Product Moderation', href: '#/admin/products' },
     { label: 'Categories', href: '#/admin/categories' },
     { label: 'Reports', href: '#/admin/reports' },
-    { label: 'Audit Logs', href: '#/admin/logs' },
+    { label: 'Support',  href: '#/admin/support'}
   ],
 };
 
