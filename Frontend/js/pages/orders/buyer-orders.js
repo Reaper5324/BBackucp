@@ -64,7 +64,7 @@ export async function buyerOrdersPage() {
               </div>
             `
             : `
-              <div class="orders-grid">
+              <div class="product-grid">
                 ${filteredOrders.map(order => `
                   <div class="order-card" data-order-id="${order.id}">
 
@@ -76,7 +76,7 @@ export async function buyerOrdersPage() {
                     </div>
 
                     <div class="card-body">
-                      <div class="info-row">
+                      <div class="orders-info-row">
                         <strong>Seller:</strong>
                         <span>${order.seller_name || 'Unknown Seller'}</span>
                       </div>
