@@ -77,8 +77,22 @@ export function initThreadPage() {
       try {
         const response = await messageService.send(currentOtherUserId, currentProductId, content);
         if (response.success) {
+          // Add message to UI immediately instead of reloading
+          const messagesArea = document.getElementById('messages-area');
+          if (messagesArea && messagesArea.querySelector('.empty-text')) {
+            messagesArea.innerHTML = ''; // Remove "No messages yet"
+          }
+          
+          const messageEl = document.createElement('div');
+          messageEl.className = 'message sent';
+          messageEl.innerHTML = `
+            <p>${content}</p>
+            <small>${new Date().toLocaleString()}</small>
+          `;
+          if (messagesArea) messagesArea.appendChild(messageEl);
+          
           input.value = '';
-          setTimeout(() => window.location.reload(), 300);
+          showNotification('Message sent!', 'success');
         }
       } catch (error) {
         showNotification(error.message || 'Failed to send message', 'error');
