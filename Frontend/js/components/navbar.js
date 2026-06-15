@@ -70,6 +70,7 @@ export async function renderNavbar() {
                 <div class="account-menu-list">
                   <a href="#/profile">Profile</a>
                   <a href="#/profile/settings">Settings</a>
+                  <a href="#/support">Contact Support</a>
                   <a href="#/login" id="logout-link">Logout</a>
                 </div>
               </details>

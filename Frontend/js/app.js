@@ -42,6 +42,8 @@ import { sellersPage } from './pages/admin/sellers.js';
 import { adminCategoriesPage } from './pages/admin/categories.js';
 import { reportsPage } from './pages/admin/reports.js';
 import { adminSettingsPage } from './pages/admin/settings.js';
+import { supportPage, initSupportPage } from './pages/support.js';
+import { adminSupportPage, initAdminSupportPage } from './pages/admin/support.js';
 import { auth } from './utils/auth.js';
 import { renderNavbar, renderSidebar } from './components/navbar.js';
 
@@ -97,7 +99,9 @@ const routes = {
   'admin/reports': { page: reportsPage, init: null, protected: true, requiredRole: 'admin' },
   'admin/settings': { page: adminSettingsPage, init: null, protected: true, requiredRole: 'admin' },
   'admin/verifications': { page: verificationsPage, init: initVerificationsPage, protected: true, requiredRole: 'admin' },
-  'admin/logs': { page: logsPage, init: null, protected: true, requiredRole: 'admin' }
+  'admin/logs': { page: logsPage, init: null, protected: true, requiredRole: 'admin' },
+  'admin/support': { page: adminSupportPage, init: initAdminSupportPage, protected: true, requiredRole: 'admin' },
+  'support': { page: supportPage, init: initSupportPage, protected: true }
 };
 
 /**

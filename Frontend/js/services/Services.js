@@ -142,7 +142,7 @@ export const adminService = {
   },
 
   async getProducts() {
-    return apiGet('/products');
+    return apiGet('/admin/products');
   },
 
   async removeProduct(productId) {
@@ -155,5 +155,29 @@ export const adminService = {
   
   async rejectVerification(verificationId) {
     return apiPost(`/admin/verifications/${verificationId}/reject`, {});
+  },
+
+  async getSupportTickets() {
+    return apiGet('/admin/support');
+  },
+
+  async getSupportTicketsByStatus(status) {
+    return apiGet(`/admin/support/status/${status}`);
+  },
+
+  async getSupportTicketDetail(ticketId) {
+    // Note: This endpoint is not yet implemented in backend
+    // Requires adding a GET /admin/support/{id} endpoint
+    // For now, we'll fetch all and filter client-side
+    const response = await this.getSupportTickets();
+    if (response.success) {
+      const ticket = response.data.find(t => t.id == ticketId);
+      return ticket ? { success: true, data: ticket } : { success: false, error: 'Ticket not found' };
+    }
+    return response;
+  },
+
+  async resolveSupportTicket(ticketId) {
+    return apiPost(`/admin/support/${ticketId}/resolve`, {});
   }
 };

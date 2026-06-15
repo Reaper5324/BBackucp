@@ -245,3 +245,28 @@ CREATE TABLE admin_logs (
     INDEX idx_log_admin  (admin_id),
     INDEX idx_log_action (action)
 ) ENGINE=InnoDB;
+
+-- -----------------------------------------------------------------------------
+-- 14. support_tickets
+-- Referenced by: none
+-- User-submitted support tickets
+-- -----------------------------------------------------------------------------
+CREATE TABLE support_tickets (
+    id              INT       UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id         INT       UNSIGNED NOT NULL,
+    subject         VARCHAR(255) NOT NULL,
+    category        VARCHAR(50) NOT NULL,
+    message         TEXT      NOT NULL,
+    status          ENUM('open','in_progress','resolved','closed') NOT NULL DEFAULT 'open',
+    resolved_by     INT       UNSIGNED DEFAULT NULL,
+    resolved_at     TIMESTAMP DEFAULT NULL,
+    created_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_ticket_user    FOREIGN KEY (user_id)    REFERENCES users(id),
+    CONSTRAINT fk_ticket_admin   FOREIGN KEY (resolved_by) REFERENCES users(id),
+
+    INDEX idx_ticket_user    (user_id),
+    INDEX idx_ticket_status  (status),
+    INDEX idx_ticket_created (created_at)
+) ENGINE=InnoDB;

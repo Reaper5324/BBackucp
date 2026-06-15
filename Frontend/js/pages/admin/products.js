@@ -49,7 +49,7 @@ export function initProductsPage() {
   document.querySelectorAll('.remove-product-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
       if (confirm('Remove this product?')) {
-        const productId = btn.closest('.table-row').dataset.productId;
+        const productId = btn.closest('[data-product-id]').dataset.productId;
         try {
           const response = await adminService.removeProduct(productId);
           if (response.success) {

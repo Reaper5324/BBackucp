@@ -102,10 +102,17 @@ $router->get('/messages/threads', 'MessageController@threads');
 $router->get('/messages', 'MessageController@thread');
 $router->post('/messages', 'MessageController@send');
 
+$router->post('/support', 'SupportController@submit');
+$router->get('/support/my-tickets', 'SupportController@myTickets');
+$router->get('/admin/support', 'SupportController@all');
+$router->get('/admin/support/status/{status}', 'SupportController@byStatus');
+$router->post('/admin/support/{id}/resolve', 'SupportController@resolve');
+
 $router->get('/admin', 'AdminController@dashboard');
 $router->get('/admin/dashboard', 'AdminController@dashboard');
 $router->get('/admin/users', 'AdminController@users');
 $router->get('/admin/sellers', 'AdminController@sellers');
+$router->get('/admin/products', 'AdminController@products');
 $router->post('/admin/users/{id}/suspend', 'AdminController@suspendUser');
 $router->post('/admin/users/{id}/reinstate', 'AdminController@reinstateUser');
 $router->post('/admin/products/{id}/remove', 'AdminController@removeProduct');

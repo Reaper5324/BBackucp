@@ -75,6 +75,12 @@ class AdminController extends Controller {
         $this->json($result, $result['success'] ? 200 : 422);
     }
 
+    public function products(): void {
+        $user = AuthMiddleware::handle();
+        RoleMiddleware::requireAdmin($user);
+        $this->json($this->admin->getProductsForModeration());
+    }
+
     public function logs(): void {
         $user = AuthMiddleware::handle();
         RoleMiddleware::requireAdmin($user);

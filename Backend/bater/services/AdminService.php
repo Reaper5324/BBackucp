@@ -116,6 +116,21 @@ class AdminService {
     }
 
     /**
+     * Fetch all products for moderation (active, inactive, removed).
+     */
+    public function getProductsForModeration(): array {
+        $db = Database::getConnection();
+        $stmt = $db->query(
+            'SELECT p.*, u.name AS seller_name, c.name AS category_name
+             FROM products p
+             JOIN users u ON p.seller_id = u.id
+             JOIN categories c ON p.category_id = c.id
+             ORDER BY p.created_at DESC'
+        );
+        return ['success' => true, 'data' => $stmt->fetchAll()];
+    }
+
+    /**
      * Fetch the admin audit log.
      */
     public function getLogs(): array {
@@ -147,5 +162,29 @@ class AdminService {
         $log->target_product_id = $targetProductId;
         $log->notes             = $notes;
         $log->save();
+    }
+
+    /**
+     * Fetch all support tickets
+     */
+    public function getSupportTickets(): array {
+        $support = new SupportService();
+        return $support->getAllTickets();
+    }
+
+    /**
+     * Fetch support tickets by status
+     */
+    public function getSupportTicketsByStatus(string $status): array {
+        $support = new SupportService();
+        return $support->getTicketsByStatus($status);
+    }
+
+    /**
+     * Mark support ticket as resolved
+     */
+    public function resolveSupportTicket(int $adminId, int $ticketId): array {
+        $support = new SupportService();
+        return $support->resolveTicket($adminId, $ticketId);
     }
 }

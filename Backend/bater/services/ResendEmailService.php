@@ -29,6 +29,18 @@ class ResendEmailService {
     }
 
     /**
+     * Send support notification email
+     */
+    public function sendSupportNotification(string $to, string $subject, string $html): array {
+        return $this->send(
+            from: 'Bater Support <onboarding@resend.dev>',
+            to: $to,
+            subject: $subject,
+            html: $html
+        );
+    }
+
+    /**
      * Send email via Resend API
      */
     private function send(string $from, string $to, string $subject, string $html): array {
