@@ -31,7 +31,7 @@ import { messagesPage, initMessagesPage } from './pages/messages/messages.js';
 import { threadPage, initThreadPage } from './pages/messages/thread.js';
 import { sellerMessagesPage, initSellerMessagesPage } from './pages/messages/seller-messages.js';
 import { verificationPage, initVerificationPage } from './pages/seller/verification.js';
-import { sellerInventoryPage } from './pages/seller/inventory.js';
+import { sellerInventoryPage, initSellerInventoryPage } from './pages/seller/inventory.js';
 import { sellerAnalyticsPage } from './pages/seller/analytics.js';
 import { adminDashboardPage } from './pages/admin/dashboard.js';
 import { usersPage, initUsersPage } from './pages/admin/users.js';
@@ -66,7 +66,7 @@ const routes = {
   'products/:id': { page: productDetailPage, init: initProductDetailPage },
   'products/:id/edit': { page: productCreatePage, init: initProductCreatePage, protected: true, requiredRole: 'seller' },
   'seller/products': { page: sellerProductsPage, init: initSellerProductsPage, protected: true, requiredRole: 'seller' },
-  'seller/inventory': { page: sellerInventoryPage, init: null, protected: true, requiredRole: 'seller' },
+  'seller/inventory': { page: sellerInventoryPage, init: initSellerInventoryPage, protected: true, requiredRole: 'seller' },
   'seller/analytics': { page: sellerAnalyticsPage, init: null, protected: true, requiredRole: 'seller' },
   'cart': { page: cartPage, init: initCartPage, protected: true, requiredRole: 'buyer' },
   'wishlist': { page: wishlistPage, init: null, protected: true, requiredRole: 'buyer' },
