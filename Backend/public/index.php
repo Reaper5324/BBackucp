@@ -1,5 +1,11 @@
 <?php
 
+ini_set('session.cookie_secure', '1');
+ini_set('session.cookie_httponly', '1');
+ini_set('session.cookie_samesite', 'None');
+ini_set('session.cookie_lifetime', '86400');
+
+
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
 $allowedOrigins = [
