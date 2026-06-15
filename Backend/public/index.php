@@ -6,6 +6,8 @@ $allowedOrigins = [
     'https://bbackucp-production.up.railway.app',
     'https://baterc.netlify.app',
     'http://bater.freedev.app',
+    'https://bbackucp-production.up.railway.app',
+    'http://bbackucp-production.up.railway.app',
     'https://bater.freedev.app',
 ];
 
