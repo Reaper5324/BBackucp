@@ -127,6 +127,8 @@ export async function adminSupportPage() {
 }
 
 export function initAdminSupportPage() {
+  const response = await adminService.getSupportTicketDetail(ticketId);
+console.log('ticket data:', response);
   // View ticket details
   document.querySelectorAll('.view-ticket-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
