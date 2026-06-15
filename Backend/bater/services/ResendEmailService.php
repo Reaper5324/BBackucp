@@ -15,7 +15,7 @@ class ResendEmailService {
     /**
      * Send password reset email
      */
-    public function sendPasswordResetEmail(string $userEmail, string $userName, string $resetToken, string $appUrl = 'https://bater.freedev.app'): array {
+    public function sendPasswordResetEmail(string $userEmail, string $userName, string $resetToken, string $appUrl = 'https://baterc.netlify.app'): array {
         $resetLink = "{$appUrl}/#/reset-password?token={$resetToken}";
 
         $html = $this->buildPasswordResetHtml($userName, $resetLink);
