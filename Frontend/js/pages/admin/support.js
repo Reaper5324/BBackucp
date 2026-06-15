@@ -180,115 +180,94 @@ export function initAdminSupportPage() {
  */
 function createTicketModal(ticket) {
   const modal = document.createElement('div');
-  modal.className = 'modal-overlay';
-  modal.style.display = 'flex';
+  modal.className = 'modal-overlay is-open';
   modal.innerHTML = `
-    <div class="modal-content" style="max-width: 600px;">
+    <div class="modal">
       <div class="modal-header">
         <h2>Support Ticket #${ticket.id}</h2>
-        <button class="close-modal-btn" aria-label="Close">&times;</button>
+        <button class="close-modal-btn modal-close">&times;</button>
       </div>
       <div class="modal-body">
-        <div style="margin-bottom: 20px;">
-          <strong>From:</strong> ${ticket.user_name} (${ticket.user_email})
+        <div class="info-row">
+          <span class="info-label">From</span>
+          <span class="info-value">${ticket.user_name} (${ticket.user_email})</span>
         </div>
-        <div style="margin-bottom: 20px;">
-          <strong>Subject:</strong> ${ticket.subject}
+        <div class="info-row">
+          <span class="info-label">Subject</span>
+          <span class="info-value">${ticket.subject}</span>
         </div>
-        <div style="margin-bottom: 20px;">
-          <strong>Category:</strong> <span class="badge badge-info">${ticket.category}</span>
+        <div class="info-row">
+          <span class="info-label">Category</span>
+          <span class="info-value"><span class="badge badge-info">${ticket.category}</span></span>
         </div>
-        <div style="margin-bottom: 20px;">
-          <strong>Status:</strong> <span class="badge badge-${ticket.status === 'open' ? 'warning' : 'success'}">${ticket.status}</span>
+        <div class="info-row">
+          <span class="info-label">Status</span>
+          <span class="info-value"><span class="badge badge-${ticket.status === 'open' ? 'warning' : 'success'}">${ticket.status}</span></span>
         </div>
-        <div style="margin-bottom: 20px;">
-          <strong>Message:</strong>
-          <div style="background-color: #f9f9f9; padding: 15px; border-radius: 4px; margin-top: 10px;">
-            ${ticket.message.split('\n').map(line => `<p>${line}</p>`).join('')}
+        <div class="info-row">
+          <span class="info-label">Message</span>
+          <span class="info-value">${ticket.message}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Submitted</span>
+          <span class="info-value">${new Date(ticket.created_at).toLocaleString()}</span>
+        </div>
+        ${ticket.resolved_at ? `
+          <div class="info-row">
+            <span class="info-label">Resolved</span>
+            <span class="info-value">${new Date(ticket.resolved_at).toLocaleString()} by ${ticket.admin_name || 'Admin'}</span>
           </div>
-        </div>
-        <div style="margin-bottom: 20px; font-size: 0.9em; color: #666;">
-          <strong>Submitted:</strong> ${new Date(ticket.created_at).toLocaleString()}
-        </div>
-        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
-          <strong>Admin Reply:</strong>
-          <form class="reply-form" style="margin-top: 15px;">
-            <textarea 
-              name="reply" 
-              placeholder="Type your reply here..." 
-              style="width: 100%; min-height: 100px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;"
-              required
-            ></textarea>
-            <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: flex-end;">
-              <button type="submit" class="btn btn-primary">Send Reply</button>
-              <button type="button" class="cancel-reply-btn btn btn-secondary">Cancel</button>
+        ` : `
+          <div style="margin-top: 1.25rem;">
+            <label class="form-label"><strong>Admin Reply</strong></label>
+            <textarea class="form-control reply-textarea" placeholder="Type your reply..." rows="4"></textarea>
+            <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem; justify-content: flex-end;">
+              <button class="send-reply-btn btn btn-primary btn-sm">Send Reply</button>
             </div>
-          </form>
-        </div>
+          </div>
+        `}
       </div>
       <div class="modal-footer">
         <button class="close-modal-btn btn btn-secondary">Close</button>
       </div>
     </div>
   `;
-  
-  const closeButtons = modal.querySelectorAll('.close-modal-btn');
-  closeButtons.forEach(btn => {
+
+  modal.querySelectorAll('.close-modal-btn').forEach(btn => {
     btn.addEventListener('click', () => modal.remove());
   });
-  
-  // Handle reply form submission
-  const replyForm = modal.querySelector('.reply-form');
-  if (replyForm) {
-    replyForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      
-      // Define the button variable from the submit event
-      const button = event.target.querySelector('button[type="submit"]');
-      const originalText = button.textContent;
-      const replyText = replyForm.querySelector('textarea[name="reply"]').value.trim();
-      
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.remove();
+  });
+
+  const sendBtn = modal.querySelector('.send-reply-btn');
+  if (sendBtn) {
+    sendBtn.addEventListener('click', async () => {
+      const replyText = modal.querySelector('.reply-textarea').value.trim();
       if (!replyText) {
         showNotification('Please enter a reply', 'warning');
         return;
       }
-      
       try {
-        // Disable button and show loading state
-        button.disabled = true;
-        button.textContent = 'Sending...';
-        
-        // Send reply to backend
+        sendBtn.disabled = true;
+        sendBtn.textContent = 'Sending...';
         const response = await adminService.addSupportTicketReply(ticket.id, replyText);
-        
         if (response.success) {
           showNotification('Reply sent successfully', 'success');
-          replyForm.reset();
-          setTimeout(() => modal.remove(), 1000);
+          setTimeout(() => modal.remove(), 800);
         } else {
-          showNotification(response.message || 'Failed to send reply', 'error');
-          button.disabled = false;
-          button.textContent = originalText;
+          showNotification(response.error || 'Failed to send reply', 'error');
+          sendBtn.disabled = false;
+          sendBtn.textContent = 'Send Reply';
         }
       } catch (error) {
-        showNotification(error.message || 'Failed to send reply', 'error');
-        button.disabled = false;
-        button.textContent = originalText;
+        showNotification('Failed to send reply', 'error');
+        sendBtn.disabled = false;
+        sendBtn.textContent = 'Send Reply';
       }
     });
-    
-    // Handle cancel button
-    const cancelBtn = modal.querySelector('.cancel-reply-btn');
-    if (cancelBtn) {
-      cancelBtn.addEventListener('click', () => {
-        replyForm.reset();
-      });
-    }
   }
-  
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) modal.remove();
-  });
-  
+
   return modal;
 }
