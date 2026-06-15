@@ -14,8 +14,6 @@ export const navByRole = {
     { label: 'Categories', href: '#/categories' },
     { label: 'Cart', href: '#/cart' },
     { label: 'Orders', href: '#/orders' },
-    { label: 'Messages', href: '#/messages' },
-    { label: 'Profile', href: '#/profile' },
     { label: 'Settings', href: '#/profile/settings' },
   ],
   seller: [
@@ -25,8 +23,6 @@ export const navByRole = {
     { label: 'Inventory', href: '#/seller/inventory' },
     { label: 'Orders', href: '#/seller/orders' },
     { label: 'Sales Analytics', href: '#/seller/analytics' },
-    { label: 'Messages', href: '#/seller-messages' },
-    { label: 'Profile', href: '#/profile' },
     { label: 'Settings', href: '#/profile/settings' },
   ],
   admin: [
@@ -36,7 +32,6 @@ export const navByRole = {
     { label: 'Product Moderation', href: '#/admin/products' },
     { label: 'Categories', href: '#/admin/categories' },
     { label: 'Reports', href: '#/admin/reports' },
-    { label: 'System Settings', href: '#/admin/settings' },
     { label: 'Audit Logs', href: '#/admin/logs' },
   ],
 };
