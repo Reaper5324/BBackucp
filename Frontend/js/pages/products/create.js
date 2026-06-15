@@ -50,7 +50,7 @@ export async function productCreatePage(productId = null) {
   }
   
   return `
-    <div class="main-layout">
+    <div class="product-container">
       <div class="product-form-container">
         <div class="form-header">
           <h1>${isEdit ? 'Edit Product' : 'Create New Product'}</h1>
@@ -146,8 +146,8 @@ export async function productCreatePage(productId = null) {
                 ${isEdit ? '' : 'required'}
                 class="hidden"
               >
-              <label for="image" class="upload-label">
-                <div class="upload-icon">Image</div>
+              <label for="image" class="upload-label" alt="click here">
+                <div class="upload-icon">here</div>
                 <p>Click to upload image</p>
               </label>
               <div id="preview" class="image-preview ${product?.image_path ? '' : 'hidden'}">
