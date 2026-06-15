@@ -3,9 +3,9 @@
  * Contact support form for buyers and sellers
  */
 
-import { supportService } from '../../services/supportService.js';
-import { showNotification } from '../../components/notifications.js';
-import { auth } from '../../utils/auth.js';
+import { supportService } from '../services/supportService.js';
+import { showNotification } from '../components/notifications.js';
+import { auth } from '../utils/auth.js';
 
 export async function supportPage() {
   const user = auth.getUser();
