@@ -10,31 +10,26 @@ import { showNotification } from '../components/notifications.js';
 /**
  * Make HTTP request
  */
-export async function apiCall(
-  endpoint,
-  options = {}
-) {
+export async function apiCall(endpoint, options = {}) {
   const {
     method = 'GET',
     body = null,
     headers = {},
-    timeout = 30000
+    timeout = 30000,
+    skipAuthRedirect = false // Add this new option flag
   } = options;
   
   const url = `${API_BASE_URL}${endpoint}`;
   
   const fetchOptions = {
     method,
-    headers: {
-      'Content-Type': 'application/json',
-      ...headers
-    },
-    credentials: 'include' // Include cookies for session
+    headers: { 'Content-Type': 'application/json', ...headers },
+    credentials: 'include' 
   };
   
   if (body) {
     if (body instanceof FormData) {
-      delete fetchOptions.headers['Content-Type']; // Let browser set content-type for FormData
+      delete fetchOptions.headers['Content-Type'];
       fetchOptions.body = body;
     } else {
       fetchOptions.body = JSON.stringify(body);
@@ -45,23 +40,23 @@ export async function apiCall(
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
     
-    const response = await fetch(url, {
-      ...fetchOptions,
-      signal: controller.signal
-    });
-    
+    const response = await fetch(url, { ...fetchOptions, signal: controller.signal });
     clearTimeout(timeoutId);
     
     // Handle 401 Unauthorized
     if (response.status === 401) {
-      auth.clear();
-      window.location.hash = '#/login';
-      throw new Error('Session expired. Please login again.');
+      if (!skipAuthRedirect) { // Only clear auth if we explicitly want to
+        auth.clear();
+        window.location.hash = '#/login';
+        throw new Error('Session expired. Please login again.');
+      } else {
+        // Return a structural failure object instead of wiping the user session
+        return { success: false, status: 401, error: 'Unauthorized background call' };
+      }
     }
     
     const raw = await response.text();
     let data;
-
     try {
       data = raw ? JSON.parse(raw) : {};
     } catch {
@@ -74,12 +69,11 @@ export async function apiCall(
     
     return data;
   } catch (error) {
-    if (error.name === 'AbortError') {
-      throw new Error('Request timeout');
-    }
+    if (error.name === 'AbortError') throw new Error('Request timeout');
     throw error;
   }
 }
+
 
 /**
  * GET request

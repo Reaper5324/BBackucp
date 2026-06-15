@@ -11,7 +11,7 @@ export const cartService = {
    * Get cart
    */
   async getCart() {
-    return apiGet('/cart');
+    return apiGet('/cart', { skipAuthRedirect: true });
   },
   
   /**
