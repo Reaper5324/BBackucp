@@ -5,18 +5,17 @@ ini_set('session.cookie_httponly', '1');
 ini_set('session.cookie_samesite', 'None');
 ini_set('session.cookie_lifetime', '86400');
 
-
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
 $allowedOrigins = [
-    'https://bbackucp-production.up.railway.app',
-    'https://baterc.netlify.app',
-    'http://bater.freedev.app',
-    'https://bbackucp-production.up.railway.app',
-    'http://bbackucp-production.up.railway.app',
-    'https://bater.freedev.app',
+    'https://railway.app',
+    'https://netlify.app',
+    'http://freedev.app',
+    'http://railway.app',
+    'https://freedev.app',
 ];
 
+// 🌟 ALWAYS send the origin and credentials headers if the origin is valid
 if (in_array($origin, $allowedOrigins, true)) {
     header("Access-Control-Allow-Origin: $origin");
     header('Access-Control-Allow-Credentials: true');
@@ -25,10 +24,13 @@ if (in_array($origin, $allowedOrigins, true)) {
 header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
+// 🌟 FIX: Mobile Safari requires the pre-flight check to explicitly return the CORS headers above
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
     http_response_code(204);
     exit();
 }
+
+// The rest of your bootstrap code remains identical
 require_once __DIR__ . '/../bater/bootstrap.php';
 require_once __DIR__ . '/../bater/core/Router.php';
 

@@ -4,17 +4,18 @@ class AuthService {
 
 // Service methods return ['success' => true, 'data' => ...] or ['success' => false, 'error' => ...].
 private function startSession(): void {
-    if (session_status() === PHP_SESSION_NONE) {
+     if (session_status() === PHP_SESSION_NONE) {
+        // Force the parameters explicitly
         session_set_cookie_params([
             'lifetime' => 86400,
             'path'     => '/',
-            'domain'   => '',
-            'secure'   => true,
+            'domain'   => '',       // Leave blank so it matches the current backend host dynamically
+            'secure'   => true,     // Must be true for SameSite=None
             'httponly' => true,
-            'samesite' => 'None',
+            'samesite' => 'None',   // Must be capital 'None' for PHP native compliance
         ]);
         session_start();
-    }
+        }
 }
 
 public function Register(array $data): array {
@@ -66,6 +67,8 @@ public function Register(array $data): array {
 
 //Login  
 public function login(string $email, string $password): array{
+
+$this->startSession();
     if(empty($email) || empty($password)){
         return ['success' => false, 'error' => 'Fill in email and password'];
 
@@ -83,7 +86,7 @@ public function login(string $email, string $password): array{
 
     }
 
-    $this->startSession();
+    
     $_SESSION['user_id'] = $user->id;
     $_SESSION['role'] = $user->getRole()->role_name;
     $_SESSION['logged_in'] = true;
