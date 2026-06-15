@@ -31,7 +31,7 @@ export async function cartPage() {
           ${items.length === 0
             ? `
               <div class="empty-cart">
-                <div class="empty-icon">Cart</div>
+                
                 <h2>Your cart is empty</h2>
                 <p>Start shopping to add items to your cart</p>
                 <a href="#/products" class="btn btn-primary">Continue Shopping</a>
