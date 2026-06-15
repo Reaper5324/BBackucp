@@ -171,7 +171,7 @@ export async function profilePage() {
         </div>
         <div class="info-row">
           <span class="info-label">Account Type</span>
-          <span class="info-value"><span class="badge-lg badge">${escapeHtml(user?.role || 'User')}</span></span>
+          <span class="info-value"><span class="status-badge">${escapeHtml(user?.role || 'User')}</span></span>
         </div>
         <div class="info-row">
           <span class="info-label">Account Created</span>

@@ -70,7 +70,7 @@ export async function buyerOrdersPage() {
 
                     <div class="card-header">
                       <h3>Order #${order.id}</h3>
-                      <span class="badge badge-${order.status || 'secondary'}">
+                      <span class="status-badge-${order.status || 'secondary'}">
                         ${order.status || 'pending'}
                       </span>
                     </div>

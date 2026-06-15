@@ -14,7 +14,7 @@ export function createOrderRow(order) {
       <div class="col-date">${formatDate(order.created_at)}</div>
       <div class="col-total">${money(order.total_amount || order.total)}</div>
       <div class="col-status">
-        <span class="status-badge badge-${order.status || 'pending'}">${order.status || 'pending'}</span>
+        <span class="status-badge${order.status || 'pending'}">${order.status || 'pending'}</span>
       </div>
       <div class="col-actions">
         <a href="#/orders/${order.id}" class="btn btn-secondary btn-sm">View</a>
