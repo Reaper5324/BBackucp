@@ -25,7 +25,7 @@ export async function productCreatePage(productId = null) {
   const hasRealId = productId !== null && productId !== undefined && productId !== '';
   const isEdit = hasRealId;
   let product = null;
-/*
+
   if (isEdit) {
     try {
       const response = await productService.getById(productId);
@@ -38,7 +38,6 @@ export async function productCreatePage(productId = null) {
       return '<div class="error-container"><p>Product not found.</p><a class="btn btn-primary" href="#/seller/products">Back to Products</a></div>';
     }
   }
-    */
 
   // Fetch categories
   let categories = [];

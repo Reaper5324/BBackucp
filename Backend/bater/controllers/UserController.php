@@ -54,4 +54,10 @@ class UserController extends Controller {
         );
         $this->json($result, $result['success'] ? 200 : 422);
     }
+
+    public function deactivate(): void {
+        $user = AuthMiddleware::handle();
+        $result = $this->users->deactivateAccount($user->id);
+        $this->json($result, $result['success'] ? 200 : 422);
+    }
 }

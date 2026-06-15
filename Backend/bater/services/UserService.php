@@ -7,7 +7,7 @@ class UserService {
     private const ALLOWED_PROFILE_IMAGE_TYPES = ['image/png', 'image/jpg', 'image/jpeg'];
 
     /**
-     * Update a user's profile information (name, phone, address).
+     * Update a user's profile information (name, phone, address, city, province).
      * Email changes are not allowed here — they would need re-verification.
      */
     public function updateProfile(int $userId, array $data): array {
@@ -27,6 +27,14 @@ class UserService {
 
         if (isset($data['address'])) {
             $user->address = trim($data['address']) ?: null;
+        }
+
+        if (isset($data['city'])) {
+            $user->city = trim($data['city']) ?: null;
+        }
+
+        if (isset($data['province'])) {
+            $user->province = trim($data['province']) ?: null;
         }
 
         if (!$user->save()) {
@@ -190,5 +198,24 @@ class UserService {
             'is_active' => $user->is_active,
             'created_at' => $user->created_at,
         ];
+    }
+
+    /**
+     * Deactivate a user account
+     */
+    public function deactivateAccount(int $userId): array {
+        $user = User::findById($userId);
+
+        if (!$user) {
+            return ['success' => false, 'error' => 'User not found.'];
+        }
+
+        $user->is_active = false;
+
+        if (!$user->save()) {
+            return ['success' => false, 'error' => 'Failed to deactivate account.'];
+        }
+
+        return ['success' => true, 'message' => 'Your account has been deactivated. You can reactivate it within 30 days.'];
     }
 }

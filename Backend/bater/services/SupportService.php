@@ -16,27 +16,39 @@ class SupportService {
      * Submit a new support ticket and send notification email to admin
      */
     public function submitTicket(int $userId, string $subject, string $category, string $message): array {
-        // Fetch user
-        $user = User::findById($userId);
-        if (!$user) {
-            return ['success' => false, 'error' => 'User not found'];
-        }
-
-        // Validate inputs
+        // Validate inputs first
         if (empty($subject) || empty($category) || empty($message)) {
             return ['success' => false, 'error' => 'All fields are required'];
         }
 
-        // Create ticket
-        $ticket = new SupportTicket();
-        $ticket->user_id = $userId;
-        $ticket->subject = trim($subject);
-        $ticket->category = trim($category);
-        $ticket->message = trim($message);
-        $ticket->status = SupportTicket::STATUS_OPEN;
+        // Fetch and verify user exists
+        $user = User::findById($userId);
+        if (!$user) {
+            return ['success' => false, 'error' => 'User account not found. Please log in again.', 'code' => 'USER_NOT_FOUND'];
+        }
 
-        if (!$ticket->save()) {
-            return ['success' => false, 'error' => 'Failed to create ticket'];
+        try {
+            // Create ticket
+            $ticket = new SupportTicket();
+            $ticket->user_id = $userId;
+            $ticket->subject = trim($subject);
+            $ticket->category = trim($category);
+            $ticket->message = trim($message);
+            $ticket->status = SupportTicket::STATUS_OPEN;
+
+            if (!$ticket->save()) {
+                return ['success' => false, 'error' => 'Failed to create ticket. Please try again.'];
+            }
+        } catch (PDOException $e) {
+            // Log the error for debugging
+            error_log('Support ticket creation failed: ' . $e->getMessage());
+            
+            // Return user-friendly error
+            if (str_contains($e->getMessage(), 'foreign key')) {
+                return ['success' => false, 'error' => 'There was an issue with your account. Please log out and log back in.', 'code' => 'FK_VIOLATION'];
+            }
+            
+            return ['success' => false, 'error' => 'An error occurred while creating the ticket. Please try again.'];
         }
 
         // Send email notification to admin

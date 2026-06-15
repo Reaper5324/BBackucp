@@ -65,7 +65,7 @@ export const userService = {
     return apiGet('/profile');
   },
 
-  async update(data) {
+  async updateProfile(data) {
     return apiPut('/profile', data);
   },
   
@@ -75,8 +75,12 @@ export const userService = {
     return apiPost('/profile/picture', formData);
   },
   
-  async changePassword(oldPassword, newPassword) {
-    return apiPost('/profile/password', { current_password: oldPassword, new_password: newPassword });
+  async changePassword(data) {
+    return apiPost('/profile/password', data);
+  },
+  
+  async deactivateAccount() {
+    return apiPost('/profile/deactivate', {});
   }
 };
 

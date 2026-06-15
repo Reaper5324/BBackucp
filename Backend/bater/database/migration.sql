@@ -31,6 +31,8 @@ CREATE TABLE users (
     profile_picture VARCHAR(255)  DEFAULT NULL,
     phone           VARCHAR(20)   DEFAULT NULL,
     address         TEXT          DEFAULT NULL,
+    city            VARCHAR(100)  DEFAULT NULL,
+    province        VARCHAR(100)  DEFAULT NULL,
     is_active       TINYINT(1)    NOT NULL DEFAULT 1,
     created_at      TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at      TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

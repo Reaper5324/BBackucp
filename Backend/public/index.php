@@ -56,6 +56,7 @@ $router->post('/profile', 'UserController@update');
 $router->put('/profile', 'UserController@update');
 $router->post('/profile/password', 'UserController@changePassword');
 $router->post('/profile/picture', 'UserController@uploadPicture');
+$router->post('/profile/deactivate', 'UserController@deactivate');
 
 $router->get('/categories', 'ProductController@categories');
 $router->get('/products/mine', 'ProductController@mine');

@@ -15,6 +15,8 @@ protected static string $table = 'users';
         public ?string $profile_picture = null,
         public ?string $phone = null,
         public ?string $address = null,
+        public ?string $city = null,
+        public ?string $province = null,
         public bool    $is_active = true,
         public ?string $created_at = null,
         public ?string $updated_at = null,
@@ -88,6 +90,8 @@ protected static string $table = 'users';
             'profile_picture' => $this->profile_picture,
             'phone'=> $this->phone,
             'address' => $this->address,
+            'city' => $this->city,
+            'province' => $this->province,
             'is_active'=> (int) $this->is_active, //1 0
         ];
     }
@@ -104,6 +108,8 @@ protected static string $table = 'users';
         $user->profile_picture =$row['profile_picture'] ?? null;
         $user->phone  =$row['phone'] ?? null;
         $user->address = $row['address'] ?? null;
+        $user->city = $row['city'] ?? null;
+        $user->province = $row['province'] ?? null;
         $user->is_active = (bool) $row['is_active'];
         $user->created_at = $row['created_at'] ?? null;
         $user->updated_at = $row['updated_at'] ?? null;

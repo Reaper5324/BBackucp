@@ -14,9 +14,14 @@ class SupportController extends Controller {
     public function submit(): void {
         $user = AuthMiddleware::handle();
 
+        if (!$user || !$user->id) {
+            $this->json(['success' => false, 'error' => 'User authentication failed'], 401);
+            return;
+        }
+
         $body = $this->body();
         $result = $this->support->submitTicket(
-            userId: $user->id,
+            userId: (int) $user->id,
             subject: $body['subject'] ?? '',
             category: $body['category'] ?? '',
             message: $body['message'] ?? ''
