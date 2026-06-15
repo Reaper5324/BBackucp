@@ -86,107 +86,84 @@ export function initAdminCategoriesPage() {
 
 function showAddCategoryModal() {
   const modal = document.createElement('div');
-  modal.className = 'modal-overlay';
-  modal.style.display = 'flex';
+  modal.className = 'modal-overlay is-open'; // add is-open
   modal.innerHTML = `
-    <div class="modal-content" style="max-width: 500px;">
+    <div class="modal"> <!-- use modal not modal-content -->
       <div class="modal-header">
         <h2>Add New Category</h2>
-        <button class="close-modal-btn" aria-label="Close">&times;</button>
+        <button class="close-modal-btn modal-close">&times;</button>
       </div>
       <div class="modal-body">
-        <form id="add-category-form" class="form-card">
           <div class="form-group">
-            <label for="cat-name" class="form-label">Category Name *</label>
+            <label class="form-label">Category Name *</label>
             <input 
               type="text" 
               id="cat-name" 
-              name="name" 
-              required 
-              placeholder="e.g., Electronics"
               class="form-control"
+              placeholder="e.g., Electronics"
             >
             <span class="error-message" id="name-error"></span>
           </div>
-          
           <div class="form-group">
-            <label for="cat-desc" class="form-label">Description</label>
+            <label class="form-label">Description</label>
             <textarea 
               id="cat-desc" 
-              name="description" 
-              placeholder="Enter category description"
               class="form-control"
               rows="4"
+              placeholder="Enter category description"
             ></textarea>
-            <span class="error-message" id="description-error"></span>
           </div>
-          
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem;">
-            <button type="submit" class="btn btn-primary">
-              <span class="btn-text">Create Category</span>
-              <span class="spinner hidden"></span>
-            </button>
-            <button type="button" class="close-modal-btn btn btn-secondary">Cancel</button>
-          </div>
-        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="close-modal-btn btn btn-secondary">Cancel</button>
+        <button id="submit-category-btn" class="btn btn-primary">Create Category</button>
       </div>
     </div>
   `;
 
-  // Close modal
-  const closeButtons = modal.querySelectorAll('.close-modal-btn');
-  closeButtons.forEach(btn => {
+  modal.querySelectorAll('.close-modal-btn').forEach(btn => {
     btn.addEventListener('click', () => modal.remove());
   });
 
-  // Form submission
-  const form = modal.querySelector('#add-category-form');
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
-    
-    const name = form.querySelector('#cat-name').value.trim();
-    const description = form.querySelector('#cat-desc').value.trim();
-    
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.remove();
+  });
+
+  modal.querySelector('#submit-category-btn').addEventListener('click', async () => {
+    const name = modal.querySelector('#cat-name').value.trim();
+    const description = modal.querySelector('#cat-desc').value.trim();
+    const nameError = modal.querySelector('#name-error');
+    const submitBtn = modal.querySelector('#submit-category-btn');
+
+    nameError.textContent = '';
+
     if (!name) {
-      form.querySelector('#name-error').textContent = 'Category name is required';
+      nameError.textContent = 'Category name is required';
       return;
     }
-    
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const btnText = form.querySelector('.btn-text');
-    const spinner = form.querySelector('.spinner');
-    
+
     try {
       submitBtn.disabled = true;
-      spinner.classList.remove('hidden');
-      btnText.textContent = 'Creating...';
-      
+      submitBtn.textContent = 'Creating...';
+
       const response = await productService.createCategory({ name, description });
-      
+
       if (response.success) {
         showNotification('Category created successfully!', 'success');
         setTimeout(() => {
           modal.remove();
           window.location.reload();
-        }, 1000);
+        }, 800);
       } else {
         showNotification(response.error || 'Failed to create category', 'error');
         submitBtn.disabled = false;
-        spinner.classList.add('hidden');
-        btnText.textContent = 'Create Category';
+        submitBtn.textContent = 'Create Category';
       }
     } catch (error) {
       showNotification(error.message || 'Failed to create category', 'error');
       submitBtn.disabled = false;
-      spinner.classList.add('hidden');
-      btnText.textContent = 'Create Category';
+      submitBtn.textContent = 'Create Category';
     }
-  });
-
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) modal.remove();
   });
 
   document.body.appendChild(modal);
