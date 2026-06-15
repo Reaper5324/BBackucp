@@ -1801,17 +1801,17 @@ small, .text-sm {
 }
 
 .badge-secondary {
-  background: #E5E7EB;
+  
   color: var(--color-ink);
 }
 
 .badge-warning {
-  background: #FEF3C7;
+ 
   color: #92400E;
 }
 
 .badge-info {
-  background: #DBEAFE;
+ 
   color: #0C4A6E;
 }
 

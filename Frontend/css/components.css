@@ -477,32 +477,32 @@
 }
 
 .badge-pending {
-  background-color: var(--color-warning-light);
+  
   color: #856404;
 }
 
 .badge-paid {
-  background-color: var(--color-success-light);
+  
   color: #155724;
 }
 
 .badge-dispatched {
-  background-color: var(--color-info-light);
+  
   color: #0c5460;
 }
 
 .badge-delivered {
-  background-color: var(--color-success-light);
+  
   color: #155724;
 }
 
 .badge-completed {
-  background-color: var(--color-success-light);
+  
   color: #155724;
 }
 
 .badge-cancelled {
-  background-color: var(--color-danger-light);
+  
   color: #721c24;
 }
 
@@ -1349,17 +1349,17 @@
 }
 
 .badge-primary {
-  background-color: var(--color-primary);
+  
   color: white;
 }
 
 .badge-secondary {
-  background-color: var(--color-secondary);
+  
   color: white;
 }
 
 .badge-success {
-  background-color: var(--color-success);
+  
   color: white;
 }
 
