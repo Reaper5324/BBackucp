@@ -22,7 +22,7 @@ export async function orderDetailPage(orderId) {
     const isSeller = user?.id === order.seller_id;
     
     return `
-      <div class="main-layout">
+      <div class="product-grid">
         <div class="order-detail-container">
           <div class="detail-header">
             <h1>Order #${order.id}</h1>
@@ -52,12 +52,12 @@ export async function orderDetailPage(orderId) {
             <!-- Buyer/Seller Information -->
             <div class="detail-section">
               <h2>Buyer Information</h2>
-              <div class="info-table">
-                <div class="info-row">
+              <div class="order-card" data-order-id="${order.id}">
+                <div class="orders-info-row">
                   <strong>Name:</strong>
                   <span>${order.buyer_name}</span>
                 </div>
-                <div class="info-row">
+                <div class="orders-info-row">
                   <strong>Email:</strong>
                   <span>${order.buyer_email}</span>
                 </div>
