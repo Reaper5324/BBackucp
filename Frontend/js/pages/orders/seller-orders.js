@@ -20,7 +20,7 @@ export async function sellerOrdersPage() {
     const filteredOrders = filterOrders(orders, currentFilter);
     
     return `
-      <div class="main-layout">
+      <div class="product-container">
         <div class="seller-orders-container">
           <div class="orders-header">
             <h1>Sales Orders</h1>
