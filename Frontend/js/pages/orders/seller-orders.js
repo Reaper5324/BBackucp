@@ -51,7 +51,7 @@ export async function sellerOrdersPage() {
               </div>
             `
             : `
-              <div class="orders-grid">
+              <div class="product-grid">
                 ${filteredOrders.map(order => `
                   <div class="order-card" data-order-id="${order.id}">
                     <div class="card-header">
@@ -60,19 +60,19 @@ export async function sellerOrdersPage() {
                     </div>
                     
                     <div class="card-body">
-                      <div class="info-row">
+                      <div class="orders-info-row">
                         <strong>Buyer:</strong>
                         <span>${order.buyer_name}</span>
                       </div>
-                      <div class="info-row">
+                      <div class="orders-info-row">
                         <strong>Total:</strong>
                         <span>R${Number(order.total_amount || 0).toFixed(2)}</span>
                       </div>
-                      <div class="info-row">
+                      <div class="orders-info-row">
                         <strong>Items:</strong>
                         <span>${order.item_count} items</span>
                       </div>
-                      <div class="info-row">
+                      <div class="orders-info-row">
                         <strong>Date:</strong>
                         <span>${formatDate(order.created_at)}</span>
                       </div>
