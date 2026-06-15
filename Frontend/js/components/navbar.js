@@ -99,16 +99,7 @@ export async function renderNavbar() {
   });
 }
 
-async function getCartCount() {
-  try {
-    const response = await cartService.getCart();
-    if (!response.success) return 0;
-    const items = response.data?.items || [];
-    return items.reduce((total, item) => total + Number(item.quantity || 1), 0);
-  } catch {
-    return 0;
-  }
-}
+
 
 export function renderSidebar() {
   const sidebar = document.getElementById('sidebar');
