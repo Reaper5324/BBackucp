@@ -6,6 +6,8 @@
 import { homePage } from './pages/home.js';
 import { loginPage, initLoginPage } from './pages/auth/login.js';
 import { registerPage, initRegisterPage } from './pages/auth/register.js';
+import { forgotPasswordPage, initForgotPasswordPage } from './pages/auth/forgot-password.js';
+import { resetPasswordPage, initResetPasswordPage } from './pages/auth/reset-password.js';
 import {
   profilePage,
   initProfilePage
@@ -51,6 +53,8 @@ const routes = {
   '': { page: homePage, init: null },
   'login': { page: loginPage, init: initLoginPage, protected: false },
   'register': { page: registerPage, init: initRegisterPage, protected: false },
+  'forgot-password': { page: forgotPasswordPage, init: initForgotPasswordPage, protected: false },
+  'reset-password': { page: resetPasswordPage, init: initResetPasswordPage, protected: false },
   'dashboard': { page: dashboardPage, init: null, protected: true, allowedRoles: ['buyer', 'seller'] },
   'profile': { page: profilePage, init: initProfilePage, protected: true },
   'profile/edit': { page: profilePage, init: initProfilePage, protected: true },

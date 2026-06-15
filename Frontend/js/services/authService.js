@@ -32,6 +32,20 @@ export const authService = {
     }
     return response;
   },
+
+  /**
+   * Request password reset
+   */
+  async requestPasswordReset(email) {
+    return apiPost('/auth/forgot-password', { email });
+  },
+
+  /**
+   * Reset password with token
+   */
+  async resetPassword(token, password) {
+    return apiPost('/auth/reset-password', { token, password });
+  },
   
   /**
    * Get current user

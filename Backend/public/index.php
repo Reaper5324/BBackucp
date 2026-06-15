@@ -30,6 +30,8 @@ $router->get('/health', 'HealthController@show');
 
 $router->post('/auth/register', 'AuthController@register');
 $router->post('/auth/login', 'AuthController@login');
+$router->post('/auth/forgot-password', 'AuthController@forgotPassword');
+$router->post('/auth/reset-password', 'AuthController@resetPassword');
 $router->post('/auth/logout', 'AuthController@logout');
 $router->get('/auth/me', 'AuthController@me');
 
