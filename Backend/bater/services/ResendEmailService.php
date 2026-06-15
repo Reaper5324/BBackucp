@@ -21,7 +21,7 @@ class ResendEmailService {
         $html = $this->buildPasswordResetHtml($userName, $resetLink);
 
         return $this->send(
-            from: 'noreply@bater.freedev.app',
+            from: 'Bater <onboarding@resend.dev>',
             to: $userEmail,
             subject: 'Reset your Bater password',
             html: $html
