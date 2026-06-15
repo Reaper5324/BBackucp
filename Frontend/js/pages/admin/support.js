@@ -47,7 +47,7 @@ export async function adminSupportPage() {
         ${openTickets.length > 0 ? `
           <div style="margin-bottom: 3rem;">
             <h2 style="margin-bottom: 1rem;">Open Tickets</h2>
-            <div class="product-grid">
+            <div class="settings-grid">
               ${openTickets.map(ticket => `
                 <div class="ticket-card" data-ticket-id="${ticket.id}">
                   <div class="card-header">

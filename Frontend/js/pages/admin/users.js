@@ -46,7 +46,7 @@ export async function usersPage() {
         ${filteredUsers.length === 0
           ? `<div class="empty-state"><p>No users found</p></div>`
           : `
-            <div class="product-grid">
+            <div class="settings-grid">
               ${filteredUsers.map(user => `
                 <div class="user-card" data-user-id="${user.id}">
                   <div class="card-header">

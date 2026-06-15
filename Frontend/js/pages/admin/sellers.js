@@ -20,7 +20,7 @@ export async function sellersPage() {
       ${sellers.length === 0
         ? `<div class="empty-state"><p>No sellers found</p></div>`
         : `
-          <div class="product-grid">
+          <div class="settings-grid">
             ${sellers.map((seller) => `
               <div class="seller-card" data-seller-id="${seller.id}">
                 <div class="card-header">

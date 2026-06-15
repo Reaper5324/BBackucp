@@ -21,7 +21,7 @@ export async function adminCategoriesPage() {
         <button id="add-category-btn" class="btn btn-primary">+ Add New Category</button>
       </div>
 
-      <div class="categories-grid">
+      <div class="settings-grid">
         ${categories.length > 0
           ? categories.map((category) => `
               <div class="category-card" data-category-id="${category.id}">
