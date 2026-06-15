@@ -37,10 +37,10 @@ async function buildSellerDashboard() {
       .reduce((sum, o) => sum + Number(o.total_amount || 0), 0);
 
     const stats = [
-      { icon: 'PL', value: products.length, label: 'Products Listed' },
-      { icon: 'AL', value: activeListings, label: 'Active Listings' },
-      { icon: 'OR', value: pendingOrders, label: 'Ready to Ship' },
-      { icon: 'RV', value: money(totalRevenue), label: 'Total Revenue' },
+      { icon: '', value: products.length, label: 'Products Listed' },
+      { icon: '', value: activeListings, label: 'Active Listings' },
+      { icon: '', value: pendingOrders, label: 'Ready to Ship' },
+      { icon: '', value: money(totalRevenue), label: 'Total Revenue' },
     ];
 
     const links = [
@@ -130,10 +130,10 @@ async function buildBuyerDashboard() {
       .reduce((sum, o) => sum + Number(o.total_amount || 0), 0);
 
     const stats = [
-      { icon: 'OR', value: orders.length, label: 'Total Orders' },
-      { icon: 'AC', value: activeOrders, label: 'Active Orders' },
-      { icon: 'CO', value: completedOrders, label: 'Completed' },
-      { icon: 'SP', value: money(totalSpent), label: 'Total Spent' },
+      { icon: '', value: orders.length, label: 'Total Orders' },
+      { icon: '', value: activeOrders, label: 'Active Orders' },
+      { icon: '', value: completedOrders, label: 'Completed' },
+      { icon: '', value: money(totalSpent), label: 'Total Spent' },
     ];
 
     const links = [
