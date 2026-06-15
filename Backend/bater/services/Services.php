@@ -1,16 +1,5 @@
 <?php
 
-// =============================================================================
-// ReviewService
-// =============================================================================
-
-/**
- * ReviewService
- *
- * A review can only be left by a buyer who has a COMPLETED order
- * for that specific product. We enforce this rule here, not in the model.
- * The model just stores the data — this service decides who is allowed to.
- */
 class ReviewService {
 
     /**

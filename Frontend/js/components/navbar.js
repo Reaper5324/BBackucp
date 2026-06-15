@@ -50,18 +50,22 @@ export async function renderNavbar() {
   const currentHash = window.location.hash || '#/';
   const cartCount = user?.role === 'buyer' ? await getCartCount() : 0;
 
-  navbar.innerHTML = `
+ navbar.innerHTML = `
     <div class="navbar-container">
-      <a href="${user?.role === 'admin' ? '#/admin' : '#/'}" class="navbar-brand">
-        <img src="images/bater-logo.jpeg" alt="Bater Logo" class="navbar-logo">
-      </a>
+      <div class="navbar-top">
+        <a href="${user?.role === 'admin' ? '#/admin' : '#/'}" class="navbar-brand">
+          <img src="images/bater-logo.jpeg" alt="Bater Logo" class="navbar-logo">
+        </a>
+        <label class="nav-toggle" for="nav-toggle-check" aria-label="Menu">&#9776;</label>
+      </div>
+      <input type="checkbox" id="nav-toggle-check" class="nav-toggle-input">
       <ul class="navbar-nav">
         ${user
           ? `
             ${roleLinks.map((item) => `
               <li>
                 <a href="${item.href}" class="${currentHash === item.href ? 'active' : ''}">
-                  ${item.label}${item.href === '#/cart' ? `<span class="cart-count">${cartCount}</span>` : ''}
+                  ${item.label}
                 </a>
               </li>
             `).join('')}
