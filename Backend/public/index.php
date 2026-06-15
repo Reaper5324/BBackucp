@@ -8,23 +8,29 @@ ini_set('session.cookie_lifetime', '86400');
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
 $allowedOrigins = [
-    'https://railway.app',
-    'https://netlify.app',
+    'https://baterc.netlify.app',
     'http://freedev.app',
-    'http://railway.app',
     'https://freedev.app',
+    'https://bbackucp-production.up.railway.app',
+    'http://railway.app'
 ];
 
-// 🌟 ALWAYS send the origin and credentials headers if the origin is valid
-if (in_array($origin, $allowedOrigins, true)) {
-    header("Access-Control-Allow-Origin: $origin");
+// Clean trailing slashes if present in the incoming origin header
+$cleanOrigin = rtrim($origin, '/');
+
+if (in_array($cleanOrigin, $allowedOrigins, true)) {
+    header("Access-Control-Allow-Origin: $cleanOrigin");
     header('Access-Control-Allow-Credentials: true');
+} else if (!empty($cleanOrigin)) {
+    // FALLBACK SAFETY: For dev testing, uncomment the line below if origins shift dynamically:
+    // header("Access-Control-Allow-Origin: $cleanOrigin");
+    // header('Access-Control-Allow-Credentials: true');
 }
 
 header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
-// 🌟 FIX: Mobile Safari requires the pre-flight check to explicitly return the CORS headers above
+// Process options check AFTER sending the dynamic access headers
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
     http_response_code(204);
     exit();
