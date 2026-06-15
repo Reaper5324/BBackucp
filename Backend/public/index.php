@@ -119,6 +119,8 @@ $router->post('/admin/users/{id}/suspend', 'AdminController@suspendUser');
 $router->post('/admin/users/{id}/reinstate', 'AdminController@reinstateUser');
 $router->post('/admin/products/{id}/remove', 'AdminController@removeProduct');
 $router->get('/admin/categories', 'AdminController@categories');
+$router->post('/admin/categories', 'AdminController@createCategory');
+$router->delete('/admin/categories/{id}', 'AdminController@deleteCategory');
 $router->get('/admin/reports', 'AdminController@reports');
 $router->get('/admin/settings', 'AdminController@settings');
 $router->get('/admin/logs', 'AdminController@logs');

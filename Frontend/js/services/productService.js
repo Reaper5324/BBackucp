@@ -74,6 +74,20 @@ export const productService = {
    */
   async getCategories() {
     return apiGet('/categories');
+  },
+
+  /**
+   * Create category (admin only)
+   */
+  async createCategory(data) {
+    return apiPost('/admin/categories', data);
+  },
+
+  /**
+   * Delete category (admin only)
+   */
+  async deleteCategory(id) {
+    return apiDelete(`/admin/categories/${id}`);
   }
 };
 

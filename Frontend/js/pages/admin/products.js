@@ -5,6 +5,11 @@
 
 import { adminService } from '../../services/adminService.js';
 import { showNotification } from '../../components/notifications.js';
+import { assetUrl } from '../../utils/assets.js';
+
+function money(value) {
+  return `R${Number(value || 0).toFixed(2)}`;
+}
 
 export async function productsPage() {
   try {
@@ -12,32 +17,50 @@ export async function productsPage() {
     const products = response.success ? response.data : [];
     
     return `
-      <div class="main-layout">
-        <div class="admin-products">
+      <div class="admin-container">
+        <div class="admin-header">
           <h1>Product Moderation</h1>
-          
-          <div class="profile-header-card">
-           
-            
-            <div class="profile-header-card">
+          <p>Review and moderate marketplace products</p>
+        </div>
+
+        ${products.length === 0
+          ? `<div class="empty-state"><p>No products to moderate</p></div>`
+          : `
+            <div class="product-grid">
               ${products.map(p => `
-                <div class="settings-card" data-product-id="${p.id}">
-                  <div class="settings-card">${p.title}</div>
-                  <div class="col-seller">${p.seller_name}</div>
-                  <div class="col-price">R${Number(p.price || 0).toFixed(2)}</div>
-                  <div class="col-status">
-                    <span class="badge badge-${p.status === 'active' ? 'success' : 'warning'}">
+                <div class="product-card" data-product-id="${p.id}">
+                  <div class="card-header">
+                    <h3>${p.title}</h3>
+                    <span class="status-badge badge-${p.status === 'active' ? 'success' : 'warning'}">
                       ${p.status || 'active'}
                     </span>
                   </div>
-                  <div class="col-actions">
+                  <div class="card-body">
+                    <div class="orders-info-row">
+                      <strong>Seller:</strong>
+                      <span>${p.seller_name}</span>
+                    </div>
+                    <div class="orders-info-row">
+                      <strong>Price:</strong>
+                      <span>${money(p.price)}</span>
+                    </div>
+                    <div class="orders-info-row">
+                      <strong>Category:</strong>
+                      <span>${p.category}</span>
+                    </div>
+                    <div class="orders-info-row">
+                      <strong>Posted:</strong>
+                      <span>${new Date(p.created_at).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                  <div class="card-actions">
+                    <button class="view-product-btn btn btn-secondary btn-sm">View</button>
                     <button class="remove-product-btn btn btn-danger btn-sm">Remove</button>
                   </div>
                 </div>
               `).join('')}
             </div>
-          </div>
-        </div>
+          `}
       </div>
     `;
   } catch (error) {
@@ -46,9 +69,19 @@ export async function productsPage() {
 }
 
 export function initProductsPage() {
+  // View product button
+  document.querySelectorAll('.view-product-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const productId = btn.closest('[data-product-id]').dataset.productId;
+      window.location.hash = `#/products/${productId}`;
+    });
+  });
+
+  // Remove product button
   document.querySelectorAll('.remove-product-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
-      if (confirm('Remove this product?')) {
+      const productTitle = btn.closest('.product-card').querySelector('h3').textContent;
+      if (confirm(`Remove product "${productTitle}"?`)) {
         const productId = btn.closest('[data-product-id]').dataset.productId;
         try {
           const response = await adminService.removeProduct(productId);
@@ -57,7 +90,7 @@ export function initProductsPage() {
             setTimeout(() => window.location.reload(), 500);
           }
         } catch (error) {
-          showNotification(error.message || 'Failed to remove', 'error');
+          showNotification(error.message || 'Failed to remove product', 'error');
         }
       }
     });

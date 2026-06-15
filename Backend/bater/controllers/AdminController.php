@@ -32,6 +32,67 @@ class AdminController extends Controller {
         $this->json(['success' => true, 'data' => Category::findAll()]);
     }
 
+    public function createCategory(): void {
+        $user = AuthMiddleware::handle();
+        RoleMiddleware::requireAdmin($user);
+
+        $body = $this->body();
+        $name = trim($body['name'] ?? '');
+        $description = trim($body['description'] ?? '');
+
+        if (empty($name)) {
+            $this->json(['success' => false, 'error' => 'Category name is required'], 422);
+            return;
+        }
+
+        // Check if category already exists
+        $existing = Category::findOneBy('name', $name);
+        if ($existing) {
+            $this->json(['success' => false, 'error' => 'Category already exists'], 422);
+            return;
+        }
+
+        $category = new Category();
+        $category->name = $name;
+        $category->description = $description ?: null;
+
+        if (!$category->save()) {
+            $this->json(['success' => false, 'error' => 'Failed to create category'], 422);
+            return;
+        }
+
+        $this->json(['success' => true, 'message' => 'Category created', 'data' => $category], 201);
+    }
+
+    public function deleteCategory(string $id): void {
+        $user = AuthMiddleware::handle();
+        RoleMiddleware::requireAdmin($user);
+
+        $category = Category::findById((int) $id);
+        if (!$category) {
+            $this->json(['success' => false, 'error' => 'Category not found'], 404);
+            return;
+        }
+
+        // Check if category has products
+        $db = Database::getConnection();
+        $stmt = $db->prepare('SELECT COUNT(*) as count FROM products WHERE category_id = ?');
+        $stmt->execute([(int) $id]);
+        $result = $stmt->fetch();
+
+        if ($result['count'] > 0) {
+            $this->json(['success' => false, 'error' => 'Cannot delete category with existing products'], 422);
+            return;
+        }
+
+        if (!$category->delete()) {
+            $this->json(['success' => false, 'error' => 'Failed to delete category'], 422);
+            return;
+        }
+
+        $this->json(['success' => true, 'message' => 'Category deleted']);
+    }
+
     public function reports(): void {
         $user = AuthMiddleware::handle();
         RoleMiddleware::requireAdmin($user);

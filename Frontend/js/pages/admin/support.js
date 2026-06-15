@@ -17,90 +17,108 @@ export async function adminSupportPage() {
     const resolvedTickets = tickets.filter(t => t.status === 'resolved' || t.status === 'closed');
     
     return `
-      <div class="main-layout">
-        <div class="admin-support">
+      <div class="admin-container">
+        <div class="admin-header">
           <h1>Support Tickets</h1>
-          
-          <div class="status-summary" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px;">
-            <div class="stat-card">
-              <div class="stat-content">
-                <div class="stat-value">${openTickets.length}</div>
-                <div class="stat-label">Open</div>
-              </div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-content">
-                <div class="stat-value">${inProgressTickets.length}</div>
-                <div class="stat-label">In Progress</div>
-              </div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-content">
-                <div class="stat-value">${resolvedTickets.length}</div>
-                <div class="stat-label">Resolved</div>
-              </div>
+          <p>Manage customer support tickets</p>
+        </div>
+        
+        <div class="status-summary" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px;">
+          <div class="stat-card">
+            <div class="stat-content">
+              <div class="stat-value">${openTickets.length}</div>
+              <div class="stat-label">Open</div>
             </div>
           </div>
-          
-          <div class="tickets-section">
-            <h2>Open Tickets</h2>
-            <div class="tickets-table">
-              <div class="table-header">
-                <div class="col-subject">Subject</div>
-                <div class="col-user">From</div>
-                <div class="col-category">Category</div>
-                <div class="col-date">Submitted</div>
-                <div class="col-actions">Actions</div>
-              </div>
-              <div class="table-body">
-                ${openTickets.length > 0 ? openTickets.map(ticket => `
-                  <div class="table-row" data-ticket-id="${ticket.id}">
-                    <div class="col-subject">
-                      <strong>${ticket.subject}</strong>
-                      <div style="font-size: 0.9em; color: #666; margin-top: 5px;">
-                        ${ticket.message.substring(0, 60)}...
-                      </div>
+          <div class="stat-card">
+            <div class="stat-content">
+              <div class="stat-value">${inProgressTickets.length}</div>
+              <div class="stat-label">In Progress</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-content">
+              <div class="stat-value">${resolvedTickets.length}</div>
+              <div class="stat-label">Resolved</div>
+            </div>
+          </div>
+        </div>
+
+        ${openTickets.length > 0 ? `
+          <div style="margin-bottom: 3rem;">
+            <h2 style="margin-bottom: 1rem;">Open Tickets</h2>
+            <div class="product-grid">
+              ${openTickets.map(ticket => `
+                <div class="ticket-card" data-ticket-id="${ticket.id}">
+                  <div class="card-header">
+                    <h3>${ticket.subject}</h3>
+                    <span class="status-badge badge-warning">Open</span>
+                  </div>
+                  <div class="card-body">
+                    <div class="orders-info-row">
+                      <strong>From:</strong>
+                      <span>${ticket.user_name}</span>
                     </div>
-                    <div class="col-user">
-                      <strong>${ticket.user_name}</strong>
-                      <div style="font-size: 0.85em; color: #666;">${ticket.user_email}</div>
+                    <div class="orders-info-row">
+                      <strong>Email:</strong>
+                      <span>${ticket.user_email}</span>
                     </div>
-                    <div class="col-category">
+                    <div class="orders-info-row">
+                      <strong>Category:</strong>
                       <span class="badge badge-info">${ticket.category}</span>
                     </div>
-                    <div class="col-date">${new Date(ticket.created_at).toLocaleDateString()}</div>
-                    <div class="col-actions">
-                      <button class="view-ticket-btn btn btn-info btn-sm">View</button>
-                      <button class="resolve-ticket-btn btn btn-success btn-sm">Resolve</button>
+                    <div class="orders-info-row">
+                      <strong>Message:</strong>
+                      <span style="font-size: 0.9em; color: #666;">${ticket.message.substring(0, 80)}...</span>
+                    </div>
+                    <div class="orders-info-row">
+                      <strong>Submitted:</strong>
+                      <span>${new Date(ticket.created_at).toLocaleDateString()}</span>
                     </div>
                   </div>
-                `).join('') : '<div style="padding: 20px; text-align: center; color: #666;">No open tickets</div>'}
-              </div>
+                  <div class="card-actions">
+                    <button class="view-ticket-btn btn btn-secondary btn-sm">View</button>
+                    <button class="resolve-ticket-btn btn btn-success btn-sm">Resolve</button>
+                  </div>
+                </div>
+              `).join('')}
             </div>
           </div>
-          
-          ${resolvedTickets.length > 0 ? `
-            <div class="tickets-section" style="margin-top: 40px;">
-              <h2>Resolved Tickets</h2>
-              <div class="tickets-table">
-                <div class="table-header">
-                  <div class="col-subject">Subject</div>
-                  <div class="col-user">From</div>
-                  <div class="col-date">Resolved</div>
-                </div>
-                <div class="table-body">
-                  ${resolvedTickets.map(ticket => `
-                    <div class="table-row">
-                      <div class="col-subject">${ticket.subject}</div>
-                      <div class="col-user">${ticket.user_name}</div>
-                      <div class="col-date">${ticket.resolved_at ? new Date(ticket.resolved_at).toLocaleDateString() : '-'}</div>
+        ` : ''}
+
+        ${resolvedTickets.length > 0 ? `
+          <div>
+            <h2 style="margin-bottom: 1rem;">Resolved Tickets</h2>
+            <div class="product-grid">
+              ${resolvedTickets.map(ticket => `
+                <div class="ticket-card resolved" data-ticket-id="${ticket.id}">
+                  <div class="card-header">
+                    <h3>${ticket.subject}</h3>
+                    <span class="status-badge badge-success">Resolved</span>
+                  </div>
+                  <div class="card-body">
+                    <div class="orders-info-row">
+                      <strong>From:</strong>
+                      <span>${ticket.user_name}</span>
                     </div>
-                  `).join('')}
+                    <div class="orders-info-row">
+                      <strong>Category:</strong>
+                      <span class="badge badge-info">${ticket.category}</span>
+                    </div>
+                    <div class="orders-info-row">
+                      <strong>Submitted:</strong>
+                      <span>${new Date(ticket.created_at).toLocaleDateString()}</span>
+                    </div>
+                    <div class="orders-info-row">
+                      <strong>Resolved:</strong>
+                      <span>${ticket.resolved_at ? new Date(ticket.resolved_at).toLocaleDateString() : '-'}</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              `).join('')}
             </div>
-          ` : ''}
-        </div>
+          </div>
+        ` : ''}
       </div>
     `;
   } catch (error) {
@@ -113,12 +131,24 @@ export function initAdminSupportPage() {
   document.querySelectorAll('.view-ticket-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
       const ticketId = btn.closest('.table-row').dataset.ticketId;
-      const response = await adminService.getSupportTicketDetail(ticketId);
+      if (!ticketId) {
+        showNotification('Error: Ticket ID not found', 'error');
+        return;
+      }
       
-      if (response.success) {
-        const ticket = response.data;
-        const modal = createTicketModal(ticket);
-        document.body.appendChild(modal);
+      try {
+        const response = await adminService.getSupportTicketDetail(ticketId);
+        
+        if (response.success && response.data) {
+          const ticket = response.data;
+          const modal = createTicketModal(ticket);
+          document.body.appendChild(modal);
+        } else {
+          showNotification(response.error || 'Failed to load ticket details', 'error');
+        }
+      } catch (error) {
+        console.error('Error loading ticket:', error);
+        showNotification('Failed to load ticket details', 'error');
       }
     });
   });
