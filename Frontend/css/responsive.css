@@ -338,22 +338,46 @@
   }
 }
 
-/* Responsive Orders Grids */
-@media (max-width: 1199px) {
+/* Responsive Orders Grids - Fixed columns like product grid */
+@media (max-width: 767px) {
   .orders-grid {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(1, 1fr);
   }
   
   .order-items-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(1, 1fr);
   }
 }
 
-@media (max-width: 767px) {
-  .orders-grid,
-  .order-items-grid {
-    grid-template-columns: 1fr;
+@media (min-width: 768px) and (max-width: 991px) {
+  .orders-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
+  
+  .order-items-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .orders-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .order-items-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .orders-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .order-items-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
   
   .order-card-image {
     height: 150px;
@@ -391,7 +415,7 @@
   .order-card-footer .btn {
     width: 100%;
   }
-}
+
 
 /* Sidebar layouts */
 @media (max-width: 991px) {

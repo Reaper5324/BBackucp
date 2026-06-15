@@ -80,15 +80,15 @@ export async function buyerOrdersPage() {
                         <strong>Seller:</strong>
                         <span>${order.seller_name || 'Unknown Seller'}</span>
                       </div>
-                      <div class="info-row">
+                      <div class="orders-info-row">
                         <strong>Total:</strong>
                         <span>${money(order.total_amount || order.total)}</span>
                       </div>
-                      <div class="info-row">
+                      <div class="orders-info-row">
                         <strong>Items:</strong>
                         <span>${order.item_count || 0} items</span>
                       </div>
-                      <div class="info-row">
+                      <div class="orders-info-row">
                         <strong>Date:</strong>
                         <span>${formatDate(order.created_at)}</span>
                       </div>
