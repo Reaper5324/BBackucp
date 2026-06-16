@@ -15,14 +15,16 @@ class UserController extends Controller {
         $this->json([
             'success' => true,
             'data' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'phone' => $user->phone,
-                'address' => $user->address,
-                'profile_picture' => $user->profile_picture,
-                'role' => $role?->role_name,
-                'created_at' => $user->created_at,
+            'id'              => $user->id,
+            'name'            => $user->name,
+            'email'           => $user->email,
+            'phone'           => $user->phone,
+            'address'         => $user->address,
+            'city'            => $user->city,
+            'province'        => $user->province,
+            'profile_picture' => $user->profile_picture,
+            'role'            => $role?->role_name,
+            'created_at'      => $user->created_at,
             ],
         ]);
     }

@@ -448,8 +448,8 @@ function initEditProfileForm() {
       spinner.classList.remove('hidden');
       btnText.textContent = 'Saving...';
       
-      const formData = new FormData(form);
-      const response = await userService.updateProfile(formData);
+     const data = Object.fromEntries(new FormData(form).entries());
+    const response = await userService.updateProfile(data);
       console.log('update response:', response);
       if (response.success) {
         // Update local auth user data

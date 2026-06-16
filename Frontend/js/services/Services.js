@@ -66,7 +66,7 @@ export const userService = {
   },
 
   async updateProfile(data) {
-    return apiPut('/profile', data);
+    return apiPost('/profile', data);
   },
   
   async uploadProfilePicture(file) {
