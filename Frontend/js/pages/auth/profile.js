@@ -450,7 +450,7 @@ function initEditProfileForm() {
       
       const formData = new FormData(form);
       const response = await userService.updateProfile(formData);
-      
+      console.log('update response:', response);
       if (response.success) {
         // Update local auth user data
         const user = await currentProfile();
