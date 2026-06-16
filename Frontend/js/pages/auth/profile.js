@@ -296,11 +296,11 @@ function mainProfilePage(user) {
           </div>
           <div class="info-row">
             <span class="info-label">City</span>
-            <span class="info-value">${escapeHtml(user?.city || '-')}</span>
+            <span class="info-value">${escapeHtml(user?.city || 'update DB Schema')}</span>
           </div>
           <div class="info-row">
             <span class="info-label">Province</span>
-            <span class="info-value">${escapeHtml(user?.province || '-')}</span>
+            <span class="info-value">${escapeHtml(user?.province || 'Update DB Schema')}</span>
           </div>
         </div>
       </div>
@@ -369,10 +369,7 @@ function initMainProfilePage() {
       uploadFeedback.className = 'form-help';
 
       try {
-        const formData = new FormData();
-        formData.append('profile_picture', file);
-
-        const response = await userService.uploadProfilePicture(formData);
+        const response = await userService.uploadProfilePicture(file);
         if (response.success) {
           const reader = new FileReader();
           reader.onload = (event) => {
