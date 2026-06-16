@@ -20,7 +20,7 @@ export async function supportPage() {
           </div>
         </header>
         
-        <div class="product-card">
+        <div class="orders-card">
           <form id="support-form" class="settings-card">
             <h2>Submit Support Ticket</h2>
             
