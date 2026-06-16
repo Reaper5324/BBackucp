@@ -11,7 +11,7 @@ export async function supportPage() {
   const user = auth.getUser();
   
   return `
-    <div class="main-layout">
+    <div class="product-container">
       <div class="profile-page">
         <header class="sprofile-header-card">
           <div>
@@ -20,7 +20,7 @@ export async function supportPage() {
           </div>
         </header>
         
-        <div class="settings-sections">
+        <div class="product-card">
           <form id="support-form" class="settings-card">
             <h2>Submit Support Ticket</h2>
             
@@ -39,7 +39,7 @@ export async function supportPage() {
             <div class="form-group">
               <label for="category">Problem Category *</label>
               <select id="category" name="category" class="form-control" required>
-                <option value="">-- Select Category --</option>
+                <option value="">Select Category</option>
                 <option value="account">Account & Login</option>
                 <option value="payment">Payment & Billing</option>
                 <option value="order">Order & Delivery</option>
@@ -72,13 +72,14 @@ export async function supportPage() {
             <button type="submit" class="btn btn-primary">Submit Support Ticket</button>
           </form>
           
-          <div class="settings-card info-card" style="margin-top: 30px; border-left: 4px solid #007bff;">
+          <div class="settings-card info-card" style="margin-top: 30px;">
             <h3>What to expect:</h3>
             <ul style="margin: 15px 0; padding-left: 20px;">
               <li>We review all support tickets within 24 hours</li>
               <li>You'll receive email updates on your ticket status</li>
               <li>Our team is committed to resolving your issue quickly</li>
-              <li>For urgent matters, contact us via email directly</li>
+              <li>For urgent matters, contact us via email directly </li>
+              <li>email Shaun Maswikaneng: tyronemas@gmail.com </li>
             </ul>
           </div>
         </div>
