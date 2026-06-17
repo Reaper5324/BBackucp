@@ -103,25 +103,6 @@ $router->get('/messages/threads', 'MessageController@threads');
 $router->get('/messages', 'MessageController@thread');
 $router->post('/messages', 'MessageController@send');
 
-$router->get('/debug-session', function () {
-
-    if (session_status() === PHP_SESSION_NONE) {
-
-        session_start();
-
-    }
-
-    echo json_encode([
-
-        'session_id' => session_id(),
-
-        'cookie' => $_COOKIE,
-
-        'session' => $_SESSION,
-
-    ]);
-
-});
 
 
 $router->post('/support', 'SupportController@submit');
