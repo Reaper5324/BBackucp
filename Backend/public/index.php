@@ -50,6 +50,7 @@ $router->post('/auth/forgot-password', 'AuthController@forgotPassword');
 $router->post('/auth/reset-password', 'AuthController@resetPassword');
 $router->post('/auth/logout', 'AuthController@logout');
 $router->get('/auth/me', 'AuthController@me');
+$router->get('/debug-session', 'DebugController@session');
 
 $router->get('/profile', 'UserController@show');
 $router->post('/profile', 'UserController@update');
