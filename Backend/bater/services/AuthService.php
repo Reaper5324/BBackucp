@@ -91,6 +91,10 @@ $this->startSession();
     $_SESSION['role'] = $user->getRole()->role_name;
     $_SESSION['logged_in'] = true;
 
+     session_write_close();
+
+
+
     return [
         'success' => true, 
         'data' =>  [
