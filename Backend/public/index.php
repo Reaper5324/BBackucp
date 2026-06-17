@@ -121,7 +121,7 @@ $router->get('/debug-session', function () {
 
     ]);
 
-})
+});
 
 
 $router->post('/support', 'SupportController@submit');
