@@ -124,6 +124,7 @@ $router->post('/admin/products/{id}/remove', 'AdminController@removeProduct');
 $router->get('/admin/categories', 'AdminController@categories');
 $router->post('/admin/categories', 'AdminController@createCategory');
 $router->delete('/admin/categories/{id}', 'AdminController@deleteCategory');
+$router->put('/admin/categories/{id}', 'AdminController@updateCategory');
 $router->get('/admin/reports', 'AdminController@reports');
 $router->get('/admin/settings', 'AdminController@settings');
 $router->get('/admin/logs', 'AdminController@logs');

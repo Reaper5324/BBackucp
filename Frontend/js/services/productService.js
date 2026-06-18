@@ -83,9 +83,13 @@ export const productService = {
     return apiPost('/admin/categories', data);
   },
 
-  /**
-   * Delete category (admin only)
-   */
+  // update category
+  async updateCategory(id, data) {
+  return apiPut(`/admin/categories/${id}`, data);
+},
+
+  // Delete category (admin only)
+
   async deleteCategory(id) {
     return apiDelete(`/admin/categories/${id}`);
   }

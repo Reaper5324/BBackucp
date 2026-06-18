@@ -32,7 +32,12 @@ export async function adminCategoriesPage() {
                   <p>${category.description || 'No description provided.'}</p>
                 </div>
                 <div class="card-actions">
-                  <button class="edit-category-btn btn btn-secondary btn-sm" data-id="${category.id}">Edit</button>
+                  <button
+            class="edit-category-btn btn btn-secondary btn-sm"
+            data-id="${category.id}"
+            data-name="${category.name}"
+            data-description="${category.description || ''}"
+              > Edit </button>
                   <button class="delete-category-btn btn btn-danger btn-sm" data-id="${category.id}">Delete</button>
                 </div>
               </div>
@@ -54,12 +59,16 @@ export function initAdminCategoriesPage() {
 
   // Edit Category Buttons
   document.querySelectorAll('.edit-category-btn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const categoryId = btn.dataset.id;
-      // Fetch category details and show modal
-      showNotification('Edit feature coming soon', 'info');
+  btn.addEventListener('click', () => {
+
+    showEditCategoryModal({
+      id: btn.dataset.id,
+      name: btn.dataset.name,
+      description: btn.dataset.description
     });
+
   });
+});
 
   // Delete Category Buttons
   document.querySelectorAll('.delete-category-btn').forEach(btn => {
@@ -165,6 +174,112 @@ function showAddCategoryModal() {
       submitBtn.textContent = 'Create Category';
     }
   });
+
+  document.body.appendChild(modal);
+}
+
+//same thing but for edit button:
+function showEditCategoryModal(category) {
+  const modal = document.createElement('div');
+//is-open to show our modal
+  modal.className = 'modal-overlay is-open';
+//The pop up modal page
+  modal.innerHTML = `
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Edit Category</h2>
+        <button class="close-modal-btn modal-close">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Category Name *</label>
+
+          <input
+            type="text"
+            id="edit-cat-name"
+            class="form-control"
+            value="${category.name || ''}"
+            placeholder="e.g., Electronics"
+          >
+
+          <span class="error-message" id="edit-name-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description</label>
+
+          <textarea
+            id="edit-cat-desc"
+            class="form-control"
+            rows="4"
+            placeholder="Enter category description"
+          >${category.description || ''}</textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="close-modal-btn btn btn-secondary">
+          Cancel
+        </button>
+
+        <button id="update-category-btn" class="btn btn-primary">
+          Save Changes
+        </button>
+      </div>
+    </div>
+  `;
+
+  modal.querySelectorAll('.close-modal-btn').forEach(btn => {
+    btn.addEventListener('click', () => modal.remove());
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.remove();
+  });
+
+  modal.querySelector('#update-category-btn')
+    .addEventListener('click', async () => {
+
+      const name = modal.querySelector('#edit-cat-name').value.trim();
+      const description = modal.querySelector('#edit-cat-desc').value.trim();
+      const errorLabel = modal.querySelector('#edit-name-error');
+      const submitBtn = modal.querySelector('#update-category-btn');
+
+      errorLabel.textContent = '';
+
+      if (!name) {
+        errorLabel.textContent = 'Category name is required';
+        return;
+      }
+
+      try {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Saving...';
+
+        const response = await productService.updateCategory(category.id, {
+          name,
+          description
+        });
+
+        if (response.success) {
+          showNotification('Category updated successfully!', 'success');
+          setTimeout(() => {
+            modal.remove();
+            window.location.reload();
+          }, 800);
+        } else {
+          showNotification(response.error || 'Failed to update category', 'error');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Save Changes';
+        }
+
+      } catch (error) {
+        showNotification(error.message || 'Failed to update category', 'error');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Save Changes';
+      }
+    });
 
   document.body.appendChild(modal);
 }

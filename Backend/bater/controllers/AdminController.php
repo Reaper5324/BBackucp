@@ -64,6 +64,62 @@ class AdminController extends Controller {
         $this->json(['success' => true, 'message' => 'Category created', 'data' => $category], 201);
     }
 
+    //edit button for frontend
+    public function updateCategory(string $id): void {
+    $user = AuthMiddleware::handle();
+    RoleMiddleware::requireAdmin($user);
+
+    $category = Category::findById((int)$id);
+
+    if (!$category) {
+        $this->json([
+            'success' => false,
+            'error' => 'Category not found'
+        ], 404);
+        return;
+    }
+
+    $body = $this->body();
+
+    $name = trim($body['name'] ?? '');
+    $description = trim($body['description'] ?? '');
+
+    if (empty($name)) {
+        $this->json([
+            'success' => false,
+            'error' => 'Category name is required'
+        ], 422);
+        return;
+    }
+
+    $existing = Category::findOneBy('name', $name);
+
+    if ($existing && $existing->id !== $category->id) {
+        $this->json([
+            'success' => false,
+            'error' => 'Category already exists'
+        ], 422);
+        return;
+    }
+
+    $category->name = $name;
+    $category->description = $description ?: null;
+
+    if (!$category->save()) {
+        $this->json([
+            'success' => false,
+            'error' => 'Failed to update category'
+        ], 422);
+        return;
+    }
+
+    $this->json([
+        'success' => true,
+        'message' => 'Category updated successfully',
+        'data' => $category
+    ]);
+}
+
     public function deleteCategory(string $id): void {
         $user = AuthMiddleware::handle();
         RoleMiddleware::requireAdmin($user);
