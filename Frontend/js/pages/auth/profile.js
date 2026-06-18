@@ -261,8 +261,6 @@ function mainProfilePage(user) {
 
       <div class="quick-actions">
         <a href="#/profile/edit" class="btn btn-primary">Edit Profile</a>
-        <a href="#/profile/security" class="btn btn-secondary">Security Settings</a>
-        <a href="#/profile/preferences" class="btn btn-secondary">Preferences</a>
       </div>
 
       <div class="card-row-2">
@@ -294,14 +292,7 @@ function mainProfilePage(user) {
             <span class="info-label">Street Address</span>
             <span class="info-value">${escapeHtml(user?.address || '-')}</span>
           </div>
-          <div class="info-row">
-            <span class="info-label">City</span>
-            <span class="info-value">${escapeHtml(user?.city || 'update DB Schema')}</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Province</span>
-            <span class="info-value">${escapeHtml(user?.province || 'Update DB Schema')}</span>
-          </div>
+         
         </div>
       </div>
 
@@ -313,9 +304,6 @@ function mainProfilePage(user) {
         <div style="display: grid; gap: 0.75rem;">
           <a href="#/profile/change-password" class="btn btn-secondary" style="justify-content: flex-start;">
             Change Password
-          </a>
-          <a href="#/profile/security" class="btn btn-secondary" style="justify-content: flex-start;">
-            Security Settings
           </a>
         </div>
       </div>
