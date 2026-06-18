@@ -62,7 +62,7 @@ export async function usersPage() {
                     </div>
                     <div class="orders-info-row">
                       <strong>Role:</strong>
-                      <span class="badge badge-info">${user.role_name}</span>
+                      <span class="status-badge badge-info">${user.role_name}</span>
                     </div>
                     <div class="orders-info-row">
                       <strong>Status:</strong>
