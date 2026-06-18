@@ -7,6 +7,7 @@ import { adminService } from '../../services/adminService.js';
 import { showNotification } from '../../components/notifications.js';
 import { assetUrl } from '../../utils/assets.js';
 
+//for price information
 function money(value) {
   return `R${Number(value || 0).toFixed(2)}`;
 }
@@ -46,7 +47,7 @@ export async function productsPage() {
                     </div>
                     <div class="orders-info-row">
                       <strong>Category:</strong>
-                      <span>${p.category}</span>
+                      <span>${p.category_name}</span>
                     </div>
                     <div class="orders-info-row">
                       <strong>Posted:</strong>

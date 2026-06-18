@@ -13,9 +13,9 @@ export async function usersPage() {
     const response = await adminService.getUsers();
     const users = response.success ? response.data : [];
     
-    const buyers = users.filter(u => u.role === 'buyer');
-    const sellers = users.filter(u => u.role === 'seller');
-    const admins = users.filter(u => u.role === 'admin');
+    const buyers = users.filter(u => u.role_name === 'buyer');
+    const sellers = users.filter(u => u.role_name === 'seller');
+    const admins = users.filter(u => u.role_name === 'admin');
     
     const filteredUsers = filterUsers(users, currentFilter);
     
@@ -62,7 +62,7 @@ export async function usersPage() {
                     </div>
                     <div class="orders-info-row">
                       <strong>Role:</strong>
-                      <span class="badge badge-info">${user.role}</span>
+                      <span class="badge badge-info">${user.role_name}</span>
                     </div>
                     <div class="orders-info-row">
                       <strong>Status:</strong>
@@ -87,7 +87,7 @@ export async function usersPage() {
 
 function filterUsers(users, filter) {
   if (filter === 'all') return users;
-  return users.filter(u => u.role === filter);
+  return users.filter(u => u.role_name === filter);
 }
 
 export function initUsersPage() {
