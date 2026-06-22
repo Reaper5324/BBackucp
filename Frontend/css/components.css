@@ -1,9 +1,6 @@
-/**
- * Components Styles
- * Reusable component styling (buttons, cards, forms, etc.)
- */
 
-/* Buttons */
+
+/* buttons*/
 .btn {
   display: inline-flex;
   align-items: center;

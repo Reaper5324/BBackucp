@@ -1,3 +1,5 @@
+import { assetUrl } from '../utils/assets.js';
+
 function money(value) {
   return `R${Number(value || 0).toFixed(2)}`;
 }
@@ -30,5 +32,5 @@ export function createCartItem(item) {
     </div>
   `;
 }
-import { assetUrl } from '../utils/assets.js';
+
 

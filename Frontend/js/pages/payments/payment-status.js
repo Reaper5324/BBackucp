@@ -71,7 +71,7 @@ function renderResult(type, customMessage = '') {
   if (type === 'success') {
     container.innerHTML = `
       <div class="success-message">
-        <div class="icon">✓</div>
+        <div class="icon">Successful</div>
         <h1>Payment Successful</h1>
         <p>Your order has been placed and confirmed.</p>
         <a href="#/orders" class="btn btn-primary">View Orders</a>
@@ -82,7 +82,7 @@ function renderResult(type, customMessage = '') {
 
   container.innerHTML = `
     <div class="error-message">
-      <div class="icon">✕</div>
+      <div class="icon"> error </div>
       <h1>Something Went Wrong</h1>
       <p>${customMessage || 'Please check your <a href="#/orders">orders page</a>.'}</p>
     </div>

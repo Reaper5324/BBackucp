@@ -1,7 +1,4 @@
-/**
- * Navbar Component
- * Role-aware navigation bar
- */
+// Role aware navbar component
 
 import { auth } from '../utils/auth.js';
 import { authService } from '../services/authService.js';

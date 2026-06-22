@@ -1,7 +1,3 @@
-/**
- * Forgot Password Page
- * Request password reset by email
- */
 
 import { authService } from '../../services/authService.js';
 import { showNotification } from '../../components/notifications.js';

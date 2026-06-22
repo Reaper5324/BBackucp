@@ -3,17 +3,7 @@
  * Reusable empty state cards with consistent styling
  */
 
-/**
- * Create an empty state card
- * @param {string} icon - Text label for the empty state
- * @param {string} title - Main title text
- * @param {string} message - Description text
- * @param {Object} action - Optional action button
- * @param {string} action.label - Button label
- * @param {string} action.href - Navigation link
- * @param {string} action.onclick - Click handler (if no href)
- * @returns {string} HTML for empty state
- */
+
 export function createEmptyState( title, message, action = null) {
   const actionHtml = action
     ? `<a href="${action.href || '#'}" class="btn btn-primary btn-sm" ${action.onclick ? `onclick="${action.onclick}"` : ''}>${action.label}</a>`

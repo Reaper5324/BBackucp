@@ -156,7 +156,6 @@ async function buildBuyerDashboard() {
         <section class="stats-grid marketplace-stats">
           ${stats.map(item => `
             <article class="stat-card">
-              <div class="stat-icon">${item.icon}</div>
               <div class="stat-content">
                 <div class="stat-value">${item.value}</div>
                 <div class="stat-label">${item.label}</div>
@@ -185,7 +184,7 @@ async function buildBuyerDashboard() {
                 <div class="order-card" onclick="window.location.hash='#/orders/${order.id}'">
                   <div class="card-header">
                     <h3>Order #${order.id}</h3>
-                    <span class="badge badge-${getStatusColor(order.status)}">${order.status}</span>
+                    <span class="status-badge-${getStatusColor(order.status)}">${order.status}</span>
                   </div>
                   <div class="card-body">
                     <div class="orders-info-row"><strong>Seller:</strong><span>${order.seller_name || 'Unknown'}</span></div>

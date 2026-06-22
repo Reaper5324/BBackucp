@@ -1,7 +1,4 @@
-/**
- * Messages Page Module
- * Display message threads
- */
+
 
 export async function messagesPage() {
   return `

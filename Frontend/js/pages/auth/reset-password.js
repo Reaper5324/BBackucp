@@ -1,7 +1,4 @@
-/**
- * Reset Password Page
- * User clicks link from email to reset password
- */
+
 
 import { authService } from '../../services/authService.js';
 import { showNotification } from '../../components/notifications.js';

@@ -1,7 +1,4 @@
-/**
- * Login Page Module
- * Renders login form and handles authentication
- */
+
 
 import { authService } from '../../services/authService.js';
 import { auth } from '../../utils/auth.js';

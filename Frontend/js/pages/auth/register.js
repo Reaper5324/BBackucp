@@ -1,7 +1,4 @@
-/**
- * Register Page Module
- * Renders registration form and handles user signup
- */
+
 
 import { authService } from '../../services/authService.js';
 import { showNotification } from '../../components/notifications.js';

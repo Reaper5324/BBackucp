@@ -1,6 +1,8 @@
 function stars(rating) {
   const value = Math.max(0, Math.min(5, Math.round(Number(rating || 0))));
   return '★'.repeat(value) + '☆'.repeat(5 - value);
+
+  //I got the stars from online not AI strictly for review stars
 }
 
 export function createReviewCard(review) {

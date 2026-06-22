@@ -1,7 +1,4 @@
-/**
- * Profile Page Module
- * Renders user profile and account settings with modern card-based layout
- */
+
 
 import { userService } from '../../services/userService.js';
 import { auth } from '../../utils/auth.js';

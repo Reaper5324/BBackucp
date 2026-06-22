@@ -1,7 +1,8 @@
-/**
- * CSS Variables - Design System
- * Central configuration for colors, spacing, typography, and theme
- */
+/* Central configs for colors, spacing, typography, and theme
+
+0.5 rem = 8px
+
+*/
 
 :root {
   /* Color Palette */
