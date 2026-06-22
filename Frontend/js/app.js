@@ -14,7 +14,6 @@ import {
 } from './pages/auth/profile.js';
 import { dashboardPage } from './pages/dashboard.js';
 import { categoriesPage } from './pages/categories.js';
-import { wishlistPage } from './pages/wishlist.js';
 import { productListPage, initProductListPage } from './pages/products/list.js';
 import { productDetailPage, initProductDetailPage } from './pages/products/detail.js';
 import { productCreatePage, initProductCreatePage } from './pages/products/create.js';
@@ -71,7 +70,6 @@ const routes = {
   'seller/inventory': { page: sellerInventoryPage, init: initSellerInventoryPage, protected: true, requiredRole: 'seller' },
   'seller/analytics': { page: sellerAnalyticsPage, init: null, protected: true, requiredRole: 'seller' },
   'cart': { page: cartPage, init: initCartPage, protected: true, requiredRole: 'buyer' },
-  'wishlist': { page: wishlistPage, init: null, protected: true, requiredRole: 'buyer' },
   'checkout': { page: checkoutPage, init: initCheckoutPage, protected: true, requiredRole: 'buyer' },
   'orders': { page: buyerOrdersPage, init: initBuyerOrdersPage, protected: true, requiredRole: 'buyer' },
   'orders/:id': { page: orderDetailPage, init: initOrderDetailPage, protected: true },
@@ -281,7 +279,6 @@ function renderPageHeroForRoute(route) {
     'seller/inventory': ['Inventory', 'Review stock levels and listing status.'],
     'seller/analytics': ['Sales Analytics', 'Check performance across your seller activity.'],
     cart: ['Shopping Cart', 'Review your selected items before checkout.'],
-    wishlist: ['Wishlist', 'Keep track of products you may want later.'],
     checkout: ['Checkout', 'Confirm your order and payment details.'],
     orders: ['Orders', 'Track purchases and order progress.'],
     'orders/:id': ['Order Details', 'Review items, status, and order actions.'],
