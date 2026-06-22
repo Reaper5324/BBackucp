@@ -15,6 +15,7 @@ export const navByRole = {
     { label: 'Cart', href: '#/cart' },
     { label: 'Orders', href: '#/orders' },
     { label: 'Settings', href: '#/profile/settings' },
+    { label: 'Contact Support', href: '#/support'},
   ],
   seller: [
     { label: 'Dashboard', href: '#/dashboard' },
@@ -24,6 +25,7 @@ export const navByRole = {
     { label: 'Orders', href: '#/seller/orders' },
     { label: 'Sales Analytics', href: '#/seller/analytics' },
     { label: 'Settings', href: '#/profile/settings' },
+    { label: 'Contact Support', href: '#/support'},
   ],
   admin: [
     { label: 'Dashboard', href: '#/admin' },

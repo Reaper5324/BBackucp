@@ -64,7 +64,6 @@ async function buildSellerDashboard() {
         <section class="stats-grid marketplace-stats">
           ${stats.map(item => `
             <article class="stat-card">
-              <div class="stat-icon">${item.icon}</div>
               <div class="stat-content">
                 <div class="stat-value">${item.value}</div>
                 <div class="stat-label">${item.label}</div>

@@ -1,7 +1,4 @@
-/**
- * Admin Support Tickets Page Module
- * Manage and resolve support tickets
- */
+//Admin support page
 
 import { adminService } from '../../services/adminService.js';
 import { showNotification } from '../../components/notifications.js';
@@ -52,7 +49,7 @@ export async function adminSupportPage() {
                 <div class="ticket-card" data-ticket-id="${ticket.id}">
                   <div class="card-header">
                     <h3>${ticket.subject}</h3>
-                    <span class="status-badge badge-warning">Open</span>
+                    <span class="status-badge">Open</span>
                   </div>
                   <div class="card-body">
                     <div class="orders-info-row">
@@ -65,7 +62,7 @@ export async function adminSupportPage() {
                     </div>
                     <div class="orders-info-row">
                       <strong>Category:</strong>
-                      <span class="badge badge-info">${ticket.category}</span>
+                      <span class="status-badge">${ticket.category}</span>
                     </div>
                     <div class="orders-info-row">
                       <strong>Message:</strong>
@@ -94,7 +91,7 @@ export async function adminSupportPage() {
                 <div class="ticket-card resolved" data-ticket-id="${ticket.id}">
                   <div class="card-header">
                     <h3>${ticket.subject}</h3>
-                    <span class="status-badge badge-success">Resolved</span>
+                    <span class="status-badge">Resolved</span>
                   </div>
                   <div class="card-body">
                     <div class="orders-info-row">
@@ -103,7 +100,7 @@ export async function adminSupportPage() {
                     </div>
                     <div class="orders-info-row">
                       <strong>Category:</strong>
-                      <span class="badge badge-info">${ticket.category}</span>
+                      <span class="status-badge">${ticket.category}</span>
                     </div>
                     <div class="orders-info-row">
                       <strong>Submitted:</strong>

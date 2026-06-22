@@ -47,7 +47,7 @@ export async function productListPage() {
           ${currentProducts.length === 0 
             ? `
               <div class="empty-state">
-                <div class="empty-icon">No Items</div>
+                <div class="icon">No Items</div>
                 <h2>No products found</h2>
                 <p>Try adjusting your filters or search terms</p>
               </div>

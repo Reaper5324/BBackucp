@@ -84,7 +84,7 @@ export async function productDetailPage(productId) {
           <!-- Product Info -->
           <section class="product-info card">
             <div class="product-header">
-              <span class="badge badge-lg">${escapeHtml(product.category_name || 'General')}</span>
+              <span class="status-badge">${escapeHtml(product.category_name || 'General')}</span>
               <h1 class="product-title">${escapeHtml(product.title)}</h1>
               
               <!-- Rating -->
@@ -128,7 +128,7 @@ export async function productDetailPage(productId) {
                   <span class="currency">R</span>
                   <span class="amount">${Number(product.price || 0).toFixed(2)}</span>
                 </div>
-                <span class="badge ${inStock ? 'badge-success' : 'badge-danger'}">
+                <span class="status-badge ${inStock ? 'badge-success' : 'badge-danger'}">
                   ${inStock ? 'In Stock' : ' Out of Stock'}
                 </span>
               </div>
@@ -182,7 +182,7 @@ export async function productDetailPage(productId) {
                   class="btn btn-secondary btn-block"
                   style="margin-top: 1rem;"
                 >
-                  Message Seller
+                  Report Seller/product
                 </button>
               ` : ''}
             </section>
@@ -258,7 +258,7 @@ export function initProductDetailPage() {
   });
 
   messageSellerbtn?.addEventListener('click', () => {
-    window.location.hash = `#/messages/${productId}?user_id=${messageSellerbtn.dataset.sellerId}`;
+    window.location.hash = `#/support`;
   });
 
   writeReviewBtn?.addEventListener('click', () => {
