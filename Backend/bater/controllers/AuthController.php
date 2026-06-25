@@ -40,10 +40,7 @@ class AuthController extends Controller {
         ]);
     }
 
-    /**
-     * Request password reset
-     * POST /auth/forgot-password
-     */
+    //POST /auth/forgot-password
     public function forgotPassword(): void {
         $body = $this->body();
         $email = trim($body['email'] ?? '');

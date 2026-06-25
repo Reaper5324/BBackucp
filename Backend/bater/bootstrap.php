@@ -1,30 +1,16 @@
 <?php
 
-/**
- * bootstrap.php
- *
- * Loaded by public/index.php before anything else runs.
- * Responsible for three things:
- *   1. Load configuration (DB credentials, payment keys)
- *   2. Register the autoloader so PHP can find any class by name
- *   3. Set global PHP settings (timezone, error reporting)
- *
- * Every request goes through this file exactly once.
- */
-
-// --- 1. Configuration ---
-
 
 require_once __DIR__ . '/config/config.php';
 
-// --- 2. PHP settings ---
+// timezone
 date_default_timezone_set('Africa/Johannesburg');
 
 // Hide errors in production so PHP details are not shown publicly.
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-// --- 3. Autoloader ---
+//  Autoloader
 // Maps a class name to its file. PHP calls this function automatically
 // whenever you use a class that hasn't been required yet.
 spl_autoload_register(function (string $class): void {

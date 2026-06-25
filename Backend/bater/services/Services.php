@@ -2,13 +2,13 @@
 
 class ReviewService {
 
-    /**
-     * Submit a review for a product.
-     *
-     * Rules:
-     *   - Reviewer must have a completed order containing this product
-     *   - Reviewer cannot review the same product twice
-     *   - Rating must be between 1 and 5
+    /*
+      Submit a review for a product.
+     
+      Rules:
+        - Reviewer must have a completed order containing this product
+        - Reviewer cannot review the same product twice
+        - Rating must be between 1 and 5
      */
     public function createReview(int $reviewerId, int $productId, int $rating, string $comment): array {
         // --- Validate rating ---

@@ -1,7 +1,4 @@
-/**
- * Admin Products Moderation Page Module
- * Moderate products and manage listings
- */
+
 
 import { adminService } from '../../services/adminService.js';
 import { showNotification } from '../../components/notifications.js';

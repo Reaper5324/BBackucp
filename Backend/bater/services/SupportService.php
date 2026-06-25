@@ -1,9 +1,6 @@
 <?php
 
-/**
- * Support Service
- * Handles support ticket submission, retrieval, and admin actions
- */
+
 class SupportService {
 
     private ResendEmailService $emailService;
@@ -12,9 +9,7 @@ class SupportService {
         $this->emailService = new ResendEmailService(RESEND_API_KEY);
     }
 
-    /**
-     * Submit a new support ticket and send notification email to admin
-     */
+    
     public function submitTicket(int $userId, string $subject, string $category, string $message): array {
         // Validate inputs first
         if (empty($subject) || empty($category) || empty($message)) {
@@ -86,9 +81,7 @@ class SupportService {
         return ['success' => true, 'data' => $stmt->fetchAll()];
     }
 
-    /**
-     * Retrieve tickets by status (admin view)
-     */
+    
     public function getTicketsByStatus(string $status): array {
         $db = Database::getConnection();
         $stmt = $db->prepare(
@@ -104,9 +97,7 @@ class SupportService {
         return ['success' => true, 'data' => $stmt->fetchAll()];
     }
 
-    /**
-     * Retrieve tickets submitted by a user
-     */
+    
     public function getUserTickets(int $userId): array {
         $db = Database::getConnection();
         $stmt = $db->prepare(
@@ -120,9 +111,7 @@ class SupportService {
         return ['success' => true, 'data' => $rows];
     }
 
-    /**
-     * Mark a support ticket as resolved (admin action)
-     */
+    //Mark a support ticket as resolved (admin action)
     public function resolveTicket(int $adminId, int $ticketId): array {
         $ticket = SupportTicket::findById($ticketId);
         if (!$ticket) {
@@ -163,9 +152,7 @@ class SupportService {
         return ['success' => true, 'message' => 'Ticket resolved successfully'];
     }
 
-    /**
-     * Send ticket submission notification email to admin
-     */
+     //Send ticket submission notification email to admin
     private function sendTicketNotificationEmail(User $user, SupportTicket $ticket): array {
         $html = $this->buildTicketNotificationHtml($user, $ticket);
 
@@ -176,9 +163,6 @@ class SupportService {
         );
     }
 
-    /**
-     * Send resolution email to user
-     */
     private function sendResolutionEmail(User $user, SupportTicket $ticket, User $admin): array {
         $html = $this->buildResolutionHtml($user, $ticket, $admin);
 
@@ -189,9 +173,7 @@ class SupportService {
         );
     }
 
-    /**
-     * Build HTML for ticket notification email (to admin)
-     */
+
     private function buildTicketNotificationHtml(User $user, SupportTicket $ticket): string {
         return "
             <!DOCTYPE html>
@@ -237,9 +219,7 @@ class SupportService {
         ";
     }
 
-    /**
-     * Build HTML for resolution email (to user)
-     */
+
     private function buildResolutionHtml(User $user, SupportTicket $ticket, User $admin): string {
         return "
             <!DOCTYPE html>
@@ -281,19 +261,14 @@ class SupportService {
         ";
     }
 
-    /**
-     * Get user role name
-     */
-    private function getUserRole(User $user): string {
+        private function getUserRole(User $user): string {
         $db = Database::getConnection();
         $stmt = $db->prepare('SELECT role_name FROM roles WHERE id = ?');
         $stmt->execute([$user->role_id]);
         return $stmt->fetchColumn() ?: 'User';
     }
 
-    /**
-     * Add a reply to a support ticket
-     */
+    
     public function addReply(int $adminId, int $ticketId, string $replyText): array {
         // Validate inputs
         if (empty($replyText) || strlen($replyText) < 5) {
@@ -355,10 +330,7 @@ class SupportService {
         ];
     }
 
-    /**
-     * Send reply notification email to user
-     */
-    private function sendReplyNotificationEmail(SupportTicket $ticket, User $admin, string $replyText): array {
+       private function sendReplyNotificationEmail(SupportTicket $ticket, User $admin, string $replyText): array {
         $user = $ticket->getUser();
         if (!$user) {
             return ['success' => false];

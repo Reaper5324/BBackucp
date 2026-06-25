@@ -1,25 +1,11 @@
 <?php
 
 
-/**
- * Admin
- *
- * Extends User with administrative capabilities.
- * An Admin can moderate listings, manage all users,
- * approve seller verifications, and view audit logs.
- *
- * Collaborators: AdminService, VerificationService, AdminLog, User
- */
+
 class Admin extends User {
 
-    // ------------------------------------------------------------------
-    // User management
-    // ------------------------------------------------------------------
-
-    /**
-     * Suspend any user account on the platform.
-     * Logs the action in admin_logs.
-     */
+   
+    
     public function suspendUser(int $userId, string $reason = ''): bool {
         $user = User::findById($userId);
 
@@ -34,9 +20,6 @@ class Admin extends User {
         return $ok;
     }
 
-    /**
-     * Reinstate a suspended user account.
-     */
     public function reinstateUser(int $userId): bool {
         $user = User::findById($userId);
 
@@ -51,14 +34,7 @@ class Admin extends User {
         return $ok;
     }
 
-    // ------------------------------------------------------------------
-    // Product moderation
-    // ------------------------------------------------------------------
-
-    /**
-     * Remove a product listing from the platform.
-     * Sets the status to 'removed' rather than hard-deleting for audit trail.
-     */
+    
     public function removeProduct(int $productId, string $reason = ''): bool {
         $product = Product::findById($productId);
 
@@ -74,13 +50,7 @@ class Admin extends User {
         return $ok;
     }
 
-    // ------------------------------------------------------------------
-    // Seller verification
-    // ------------------------------------------------------------------
-
-    /**
-     * Approve a seller's verification application.
-     */
+    
     public function approveVerification(int $verificationId): bool {
         $verification = SellerVerification::findById($verificationId);
 
@@ -98,9 +68,7 @@ class Admin extends User {
         return $ok;
     }
 
-    /**
-     * Reject a seller's verification application with an optional reason.
-     */
+    
     public function rejectVerification(int $verificationId, string $reason = ''): bool {
         $verification = SellerVerification::findById($verificationId);
 
@@ -118,20 +86,12 @@ class Admin extends User {
         return $ok;
     }
 
-    // ------------------------------------------------------------------
-    // Audit log
-    // ------------------------------------------------------------------
-
-    /**
-     * Fetch all admin log entries across the platform.
-     */
+   
     public function getLogs(): array {
         return AdminLog::findAll();
     }
 
-    /**
-     * Internal helper — write a record to admin_logs.
-     */
+    
     private function log(
         string $action,
         ?int   $targetUserId    = null,
@@ -147,14 +107,7 @@ class Admin extends User {
         $log->save();
     }
 
-    // ------------------------------------------------------------------
-    // Convenience factory
-    // ------------------------------------------------------------------
-
-    /**
-     * Load an Admin by user ID.
-     * Returns null if the user doesn't exist or is not an admin.
-     */
+   
     public static function findAdminById(int $id): ?static {
         $user = User::findById($id);
 

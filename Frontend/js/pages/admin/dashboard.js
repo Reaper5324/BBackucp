@@ -1,7 +1,4 @@
-/**
- * Admin Dashboard Page Module
- * Admin overview and statistics
- */
+
 
 import { adminService } from '../../services/adminService.js';
 

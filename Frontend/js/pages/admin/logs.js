@@ -1,7 +1,4 @@
-/**
- * Admin Logs Page Module
- * View system activity logs
- */
+
 
 import { adminService } from '../../services/adminService.js';
 

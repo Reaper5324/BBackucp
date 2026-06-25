@@ -6,10 +6,7 @@ class UserService {
     private const PROFILE_UPLOAD_DIR = '/uploads/profiles';
     private const ALLOWED_PROFILE_IMAGE_TYPES = ['image/png', 'image/jpg', 'image/jpeg'];
 
-    /**
-     * Update a user's profile information (name, phone, address, city, province).
-     * Email changes are not allowed here — they would need re-verification.
-     */
+    
     public function updateProfile(int $userId, array $data): array {
         $user = User::findById($userId);
 

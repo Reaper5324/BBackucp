@@ -3,13 +3,13 @@
 
 class ReviewService {
 
-    /**
-     * Submit a review for a product.
-     *
-     * Rules:
-     *   - Reviewer must have a completed order containing this product
-     *   - Reviewer cannot review the same product twice
-     *   - Rating must be between 1 and 5
+    /*
+      Submit a review for a product.
+     
+      Rules:
+        - Reviewer must have a completed order containing this product
+        - Reviewer cannot review the same product twice
+        - Rating must be between 1 and 5
      */
     public function createReview(int $reviewerId, int $productId, int $rating, string $comment): array {
         // --- Validate rating ---
@@ -34,7 +34,7 @@ class ReviewService {
             ];
         }
 
-        // --- No duplicate reviews ---
+        //  No duplicate reviews
         $db   = Database::getConnection();
         $stmt = $db->prepare(
             'SELECT COUNT(*) FROM reviews WHERE reviewer_id = ? AND product_id = ?'
@@ -44,7 +44,7 @@ class ReviewService {
             return ['success' => false, 'error' => 'You have already reviewed this product.'];
         }
 
-        // --- Create the review ---
+        // Create the review 
         $review              = new Review();
         $review->reviewer_id = $reviewerId;
         $review->product_id  = $productId;
@@ -58,9 +58,7 @@ class ReviewService {
         return ['success' => true, 'data' => ['review_id' => $review->id]];
     }
 
-    /**
-     * Delete a review. Only the reviewer who wrote it can delete it.
-     */
+    
     public function deleteReview(int $reviewId, int $reviewerId): array {
         $review = Review::findById($reviewId);
 
@@ -79,18 +77,11 @@ class ReviewService {
         return ['success' => true];
     }
 
-    /**
-     * Get all reviews for a product.
-     */
-    public function getProductReviews(int $productId): array {
+        public function getProductReviews(int $productId): array {
         return ['success' => true, 'data' => Review::findBy('product_id', $productId)];
     }
 
-    /**
-     * Check if a buyer has a completed order that contains a specific product.
-     * This is the gate that prevents fake reviews.
-     */
-    private function hasPurchasedProduct(int $buyerId, int $productId): bool {
+        private function hasPurchasedProduct(int $buyerId, int $productId): bool {
         $db   = Database::getConnection();
         $stmt = $db->prepare(
             "SELECT COUNT(*)

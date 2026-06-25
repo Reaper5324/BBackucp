@@ -1,7 +1,4 @@
-/**
- * Home Page Module
- * Main landing page
- */
+
 
 import { auth } from '../utils/auth.js';
 import { productService } from '../services/productService.js';

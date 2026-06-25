@@ -23,8 +23,8 @@ class Response {
         exit();
     }
 
-    /**
-     * Send a success response with optional data.
+    /*
+      Send a success response with optional data.
      */
     public static function success(mixed $data = null, int $statusCode = 200): never {
         $body = ['success' => true];
@@ -32,29 +32,29 @@ class Response {
         static::json($body, $statusCode);
     }
 
-    /**
-     * Send an error response with a message.
+    /*
+      Send an error response with a message.
      */
     public static function error(string $message, int $statusCode = 400): never {
         static::json(['success' => false, 'error' => $message], $statusCode);
     }
 
-    /**
-     * Redirect the browser to another URL and stop execution.
+    /*
+      Redirect the browser to another URL and stop execution.
      */
     public static function redirect(string $url): never {
         header('Location: ' . $url);
         exit();
     }
 
-    /**
-     * Take a service result array and send the appropriate response.
-     *
-     * Every service returns ['success' => true/false, 'data'/'error' => ...].
-     * This method converts that into an HTTP response so controllers
-     * can do: Response::fromService($result) instead of branching every time.
-     *
-     * $successCode — what HTTP code to use on success (default 200, use 201 for creates)
+    /*
+      Take a service result array and send the appropriate response.
+     
+      Every service returns ['success' => true/false, 'data'/'error' => ...].
+      This method converts that into an HTTP response so controllers
+      can do: Response::fromService($result) instead of branching every time.
+     
+      $successCode — what HTTP code to use on success (default 200, use 201 for creates)
      */
     public static function fromService(array $result, int $successCode = 200): never {
         if ($result['success']) {

@@ -3,10 +3,7 @@
 
 class AdminService {
 
-    /**
-     * Fetch all users on the platform with their role names.
-     * Used for the admin user management table.
-     */
+    
     public function getAllUsers(): array {
         $db   = Database::getConnection();
         $stmt = $db->query(
@@ -30,9 +27,7 @@ class AdminService {
         return ['success' => true, 'data' => $stmt->fetchAll()];
     }
 
-    /**
-     * Suspend a user and log the action.
-     */
+    
     public function suspendUser(int $adminId, int $targetUserId, string $reason = ''): array {
         if ($adminId === $targetUserId) {
             return ['success' => false, 'error' => 'You cannot suspend your own account.'];
@@ -56,9 +51,7 @@ class AdminService {
         return ['success' => true];
     }
 
-    /**
-     * Reinstate a suspended user.
-     */
+    
     public function reinstateUser(int $adminId, int $targetUserId): array {
         $user = User::findById($targetUserId);
         if (!$user) {
@@ -74,9 +67,7 @@ class AdminService {
         return ['success' => true];
     }
 
-    /**
-     * Remove a product listing from the platform.
-     */
+    
     public function removeProduct(int $adminId, int $productId, string $reason = ''): array {
         $product = Product::findById($productId);
         if (!$product) {
@@ -98,9 +89,7 @@ class AdminService {
         return ['success' => true];
     }
 
-    /**
-     * Summary counts for the admin dashboard.
-     */
+    
     public function getDashboardStats(): array {
         $db = Database::getConnection();
 
@@ -115,9 +104,7 @@ class AdminService {
         return ['success' => true, 'data' => $stats];
     }
 
-    /**
-     * Fetch all products for moderation (active, inactive, removed).
-     */
+    
     public function getProductsForModeration(): array {
         $db = Database::getConnection();
         $stmt = $db->query(
@@ -130,9 +117,7 @@ class AdminService {
         return ['success' => true, 'data' => $stmt->fetchAll()];
     }
 
-    /**
-     * Fetch the admin audit log.
-     */
+   
     public function getLogs(): array {
         $db   = Database::getConnection();
         $stmt = $db->query(
@@ -145,9 +130,7 @@ class AdminService {
         return ['success' => true, 'data' => $stmt->fetchAll()];
     }
 
-    /**
-     * Write an admin action to the audit log.
-     */
+    
     private function writeLog(
         int    $adminId,
         string $action,
@@ -164,26 +147,18 @@ class AdminService {
         $log->save();
     }
 
-    /**
-     * Fetch all support tickets
-     */
-    public function getSupportTickets(): array {
+        public function getSupportTickets(): array {
         $support = new SupportService();
         return $support->getAllTickets();
     }
 
-    /**
-     * Fetch support tickets by status
-     */
+    
     public function getSupportTicketsByStatus(string $status): array {
         $support = new SupportService();
         return $support->getTicketsByStatus($status);
     }
 
-    /**
-     * Mark support ticket as resolved
-     */
-    public function resolveSupportTicket(int $adminId, int $ticketId): array {
+        public function resolveSupportTicket(int $adminId, int $ticketId): array {
         $support = new SupportService();
         return $support->resolveTicket($adminId, $ticketId);
     }

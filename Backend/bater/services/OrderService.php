@@ -100,11 +100,7 @@ class OrderService {
         }
     }
 
-    /**
-     * Demo mode: called by the buyer on return from PayFast.
-     * Verifies the order belongs to the buyer, then marks it paid.
-     * In production, payment confirmation comes exclusively from the ITN webhook.
-     */
+    
     public function markPaid(int $orderId, int $buyerId): array {
         $order = Order::findById($orderId);
 

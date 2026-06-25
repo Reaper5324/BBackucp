@@ -1,7 +1,4 @@
-/**
- * Admin Users Management Page Module
- * Manage users and their roles
- */
+
 
 import { adminService } from '../../services/adminService.js';
 import { showNotification } from '../../components/notifications.js';
