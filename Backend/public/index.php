@@ -44,6 +44,9 @@ $router = new Router();
 
 $router->get('/health', 'HealthController@show');
 
+$router->post('/rag/ask', 'RagController@ask');
+$router->get('/rag/health', 'RagController@health');
+
 $router->post('/auth/register', 'AuthController@register');
 $router->post('/auth/login', 'AuthController@login');
 $router->post('/auth/forgot-password', 'AuthController@forgotPassword');

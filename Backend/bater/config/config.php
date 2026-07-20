@@ -10,6 +10,7 @@ define('PAYFAST_MERCHANT_KEY', getenv('PAYFAST_MERCHANT_KEY') ?: '46f0cd694581a'
 define('PAYFAST_PASSPHRASE', getenv('PAYFAST_PASSPHRASE') ?: 'jt7NOE43FZPn');
 
 define('RESEND_API_KEY', getenv('RESEND_API_KEY') ?: '');
+define('RAG_SERVICE_URL', rtrim(getenv('RAG_SERVICE_URL') ?: 'http://127.0.0.1:8001', '/'));
 
 $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
 $host = $_SERVER['HTTP_HOST'] ?? (getenv('RAILWAY_PUBLIC_DOMAIN') ?: 'localhost');

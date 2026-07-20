@@ -42,6 +42,7 @@ import { adminCategoriesPage, initAdminCategoriesPage } from './pages/admin/cate
 import { reportsPage } from './pages/admin/reports.js';
 import { adminSettingsPage } from './pages/admin/settings.js';
 import { supportPage, initSupportPage } from './pages/support.js';
+import { assistantPage, initAssistantPage } from './pages/assistant.js';
 import { adminSupportPage, initAdminSupportPage } from './pages/admin/support.js';
 import { auth } from './utils/auth.js';
 import { renderNavbar, renderSidebar } from './components/navbar.js';
@@ -99,7 +100,8 @@ const routes = {
   'admin/verifications': { page: verificationsPage, init: initVerificationsPage, protected: true, requiredRole: 'admin' },
   'admin/logs': { page: logsPage, init: null, protected: true, requiredRole: 'admin' },
   'admin/support': { page: adminSupportPage, init: initAdminSupportPage, protected: true, requiredRole: 'admin' },
-  'support': { page: supportPage, init: initSupportPage, protected: true }
+  'support': { page: supportPage, init: initSupportPage, protected: true },
+  'assistant': { page: assistantPage, init: initAssistantPage }
 };
 
 /**
@@ -299,6 +301,7 @@ function renderPageHeroForRoute(route) {
     'admin/settings': ['System Settings', 'Manage administrative settings.'],
     'admin/verifications': ['Verifications', 'Approve or reject seller verification requests.'],
     'admin/logs': ['Audit Logs', 'Review important admin actions.'],
+    assistant: ['Bater Assistant', 'Ask grounded marketplace questions from the product and support knowledge base.'],
   };
 
   const fallbackTitle = route.actualPath

@@ -9,6 +9,7 @@ export const navByRole = {
     { label: 'Dashboard', href: '#/dashboard' },
     { label: 'Browse Products', href: '#/products' },
     { label: 'Categories', href: '#/categories' },
+    { label: 'Assistant', href: '#/assistant' },
     { label: 'Cart', href: '#/cart' },
     { label: 'Orders', href: '#/orders' },
     { label: 'Settings', href: '#/profile/settings' },
@@ -18,6 +19,7 @@ export const navByRole = {
     { label: 'Dashboard', href: '#/dashboard' },
     { label: 'My Products', href: '#/seller/products' },
     { label: 'Add Product', href: '#/products/create' },
+    { label: 'Assistant', href: '#/assistant' },
     { label: 'Inventory', href: '#/seller/inventory' },
     { label: 'Orders', href: '#/seller/orders' },
     { label: 'Sales Analytics', href: '#/seller/analytics' },
@@ -31,7 +33,8 @@ export const navByRole = {
     { label: 'Product Moderation', href: '#/admin/products' },
     { label: 'Categories', href: '#/admin/categories' },
     { label: 'Reports', href: '#/admin/reports' },
-    { label: 'Support',  href: '#/admin/support'}
+    { label: 'Support',  href: '#/admin/support'},
+    { label: 'Assistant', href: '#/assistant' }
   ],
 };
 
@@ -77,6 +80,7 @@ export async function renderNavbar() {
           `
           : `
             <li><a href="#/products" class="${currentHash === '#/products' ? 'active' : ''}">Browse Products</a></li>
+            <li><a href="#/assistant" class="${currentHash === '#/assistant' ? 'active' : ''}">Assistant</a></li>
             <li><a href="#/login" class="${currentHash === '#/login' ? 'active' : ''}">Login</a></li>
             <li><a href="#/register" class="${currentHash === '#/register' ? 'active' : ''}">Register</a></li>
           `
@@ -117,6 +121,7 @@ export function renderSidebar() {
   const roleLinks = user ? (navByRole[user.role] || navByRole.buyer) : [
     { label: 'Browse Products', href: '#/products' },
     { label: 'Categories', href: '#/categories' },
+    { label: 'Assistant', href: '#/assistant' },
     { label: 'Login', href: '#/login' },
     { label: 'Register', href: '#/register' },
   ];
