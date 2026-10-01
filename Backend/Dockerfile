@@ -1,8 +1,10 @@
-FROM php:8.3-apache
+# PHP-FPM backend. FPM listens on port 9000 and does not serve HTTP directly.
+# Nginx (see nginx.conf) must be deployed as a separate service or sidecar and
+# configured to fastcgi_pass to this container on port 9000. The Nginx service
+# also needs access to /var/www/html/public for static files.
+FROM php:8.3-fpm
 
 RUN docker-php-ext-install pdo pdo_mysql
-
-RUN a2enmod rewrite headers
 
 RUN php -v && php -m | grep -i pdo
 
@@ -15,16 +17,10 @@ RUN chmod +x /start.sh
 COPY bater/ ./bater/
 COPY public/ ./public/
 
-RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' \
-    /etc/apache2/sites-available/000-default.conf
-
-RUN printf '<Directory /var/www/html/public>\n\tAllowOverride All\n\tRequire all granted\n</Directory>\n' \
-    >> /etc/apache2/apache2.conf
-
 RUN mkdir -p /var/www/html/public/uploads/products \
     && chown -R www-data:www-data /var/www/html/public/uploads \
     && chmod -R 775 /var/www/html/public/uploads \
     && chown www-data:www-data /var/www/html/public \
     && chmod 775 /var/www/html/public
 
-EXPOSE 80
+EXPOSE 9000
