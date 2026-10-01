@@ -10,10 +10,6 @@ RUN php -v && php -m | grep -i pdo
 
 WORKDIR /var/www/html
 
-# Move these lines up here to break the Docker build cache
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
-
 COPY bater/ ./bater/
 COPY public/ ./public/
 
